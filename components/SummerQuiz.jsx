@@ -1,20 +1,22 @@
+"use client";
 // ==================== IMPORTS ====================
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import THAI_QUESTIONS from "../questions/Thai";
 import MATH_QUESTIONS from "../questions/Math";
 
-// ==================== MINI GAMES (lazy import) ====================
-// MiniGames is loaded separately to keep this file lean
 // ==================== VERSION ====================
 const APP_VERSION = "1.2.0";
 
-// Lazy load MiniGames to keep initial bundle small
-import dynamic from "next/dynamic";
-const MiniGamesLazy = dynamic(() => import("./MiniGames"), { ssr: false, loading: () => (
-  <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"100vh", background:"#0f0524", color:"white", fontFamily:"Kanit, sans-serif", fontSize:"1.2rem" }}>
-    🎮 กำลังโหลดเกมส์...
-  </div>
-)});
+// Lazy load MiniGames
+const MiniGamesLazy = dynamic(() => import("./MiniGames"), {
+  ssr: false,
+  loading: () => (
+    <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"100vh", background:"#0f0524", color:"white", fontFamily:"Kanit, sans-serif", fontSize:"1.2rem" }}>
+      🎮 กำลังโหลดเกมส์...
+    </div>
+  ),
+});
 
 // ==================== QUESTION BANK ====================
 const QUESTION_BANK = {
@@ -625,6 +627,11 @@ export default function App() {
         {screen==="quiz"    && subject && <QuizScreen key={questions.map(q=>q.id).join("-")} subject={subject} questions={questions} onFinish={finishQuiz}/>}
         {screen==="results" && subject && <ResultsScreen subject={subject} questions={questions} answers={answers} stats={stats} onReview={()=>setScreen("review")} onHome={()=>setScreen("home")} onRetry={()=>startQuiz(questions.length)}/>}
         {screen==="review"  && subject && <ReviewScreen subject={subject} questions={questions} answers={answers} onHome={()=>setScreen("home")}/>}
+        {showMini && (
+          <div style={{ position:"fixed", inset:0, zIndex:1000 }}>
+            <MiniGamesLazy onBack={() => setShowMini(false)}/>
+          </div>
+        )}
       </div>
     </>
   );
