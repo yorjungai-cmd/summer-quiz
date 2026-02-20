@@ -13,6 +13,7 @@ const STYLE = `
     background: linear-gradient(135deg, #0f0524 0%, #1a0533 50%, #0d1b4b 100%);
     font-family: 'Kanit', sans-serif;
   }
+  .mg-root.scrollable { overflow-y: auto; height: auto; min-height: 100vh; }
   .mg-stars {
     position: absolute; inset: 0; pointer-events: none;
     background-image:
@@ -24,7 +25,7 @@ const STYLE = `
       radial-gradient(2px 2px at 33% 8%, rgba(255,220,100,0.8) 0%, transparent 100%),
       radial-gradient(2px 2px at 72% 42%, rgba(150,200,255,0.8) 0%, transparent 100%);
   }
-  .mg-screen { position: relative; z-index: 1; width: 100%; height: 100vh; display: flex; flex-direction: column; }
+  .mg-screen { position: relative; z-index: 1; width: 100%; min-height: 100vh; display: flex; flex-direction: column; }
   .mg-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 18px; backdrop-filter: blur(10px); }
   .mg-btn { font-family: 'Kanit', sans-serif; font-weight: 700; border: none; cursor: pointer; transition: all 0.15s ease; }
   .mg-btn:active { transform: scale(0.94); }
@@ -32,19 +33,20 @@ const STYLE = `
   /* ── Memory Match ── */
   .mem-grid { display: grid; gap: 10px; }
   .mem-card {
-    aspect-ratio: 1; border-radius: 16px; border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 16px; border: 2px solid rgba(255,255,255,0.15);
     background: rgba(255,255,255,0.08); cursor: pointer; transition: all 0.35s ease;
     display: flex; align-items: center; justify-content: center;
     backdrop-filter: blur(5px); position: relative; overflow: hidden;
     transform-style: preserve-3d; padding: 6px;
+    height: min(calc((100vmin - 130px) / 4), 155px);
   }
   .mem-card.flipped { background: rgba(124,58,237,0.3); border-color: #a855f7; }
   .mem-card.matched { background: rgba(34,197,94,0.25); border-color: #22c55e; cursor: default; animation: matched-pop 0.4s ease; }
   .mem-card:hover:not(.matched) { border-color: rgba(255,255,255,0.4); transform: scale(1.04); }
   .mem-back { font-size: clamp(2rem,5vw,2.8rem); }
   .mem-front { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width:100%; height:100%; padding: 6px; }
-  .mem-front .big-emoji { font-size: clamp(2.4rem,6vw,3.6rem); line-height: 1; }
-  .mem-front .word-label { font-size: clamp(1rem,2.8vw,1.35rem); font-weight: 900; color: white; text-align: center; line-height: 1.2; }
+  .mem-front .big-emoji { font-size: clamp(1.8rem,5vw,3rem); line-height: 1; }
+  .mem-front .word-label { font-size: clamp(0.9rem,2.2vw,1.2rem); font-weight: 900; color: white; text-align: center; line-height: 1.2; }
   .mem-front .word-hint { font-size: clamp(0.75rem,2vw,0.95rem); font-weight: 600; color: rgba(255,255,255,0.65); text-align: center; line-height: 1.2; }
 
   /* ── Fill Blank ── */
@@ -220,7 +222,7 @@ function MemoryGame({ onFinish }) {
   );
 
   return (
-    <div className="mg-screen" style={{ padding:"14px 16px", gap:12 }}>
+    <div className="mg-screen" style={{ padding:"14px 16px 12px", gap:8, height:"100vh", overflow:"hidden", boxSizing:"border-box" }}>
       {/* Header */}
       <div style={{ display:"flex", alignItems:"center", gap:10, position:"relative", zIndex:2 }}>
         <button className="mg-btn" onClick={onFinish} style={{ padding:"8px 12px", borderRadius:12, background:"rgba(255,255,255,0.1)", color:"white", fontSize:"0.85rem", border:"1px solid rgba(255,255,255,0.2)", flexShrink:0 }}>←</button>
@@ -249,7 +251,7 @@ function MemoryGame({ onFinish }) {
       </div>
 
       {/* Grid */}
-      <div className="mem-grid" style={{ gridTemplateColumns:`repeat(${cols},1fr)`, flex:1, position:"relative", zIndex:2 }}>
+      <div className="mem-grid" style={{ gridTemplateColumns:`repeat(${cols},1fr)`, flexShrink:0, position:"relative", zIndex:2 }}>
         {deck.map(card => {
           const isFlipped = flipped.includes(card.uid);
           const isMatched = matched.has(card.uid);
@@ -258,7 +260,7 @@ function MemoryGame({ onFinish }) {
               key={card.uid}
               className={`mem-card ${isFlipped||isMatched?"flipped":""} ${isMatched?"matched":""}`}
               onClick={() => flip(card.uid)}
-              style={{ minHeight:'clamp(80px,14vw,130px)' }}
+              style={{ }}
             >
               {isFlipped || isMatched ? (
                 <div className="mem-front">
