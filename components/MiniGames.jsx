@@ -32,19 +32,20 @@ const STYLE = `
   /* ── Memory Match ── */
   .mem-grid { display: grid; gap: 10px; }
   .mem-card {
-    aspect-ratio: 1; border-radius: 14px; border: 2px solid rgba(255,255,255,0.15);
+    aspect-ratio: 1; border-radius: 16px; border: 2px solid rgba(255,255,255,0.15);
     background: rgba(255,255,255,0.08); cursor: pointer; transition: all 0.35s ease;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.6rem; backdrop-filter: blur(5px); position: relative; overflow: hidden;
-    transform-style: preserve-3d;
+    backdrop-filter: blur(5px); position: relative; overflow: hidden;
+    transform-style: preserve-3d; padding: 6px;
   }
   .mem-card.flipped { background: rgba(124,58,237,0.3); border-color: #a855f7; }
   .mem-card.matched { background: rgba(34,197,94,0.25); border-color: #22c55e; cursor: default; animation: matched-pop 0.4s ease; }
   .mem-card:hover:not(.matched) { border-color: rgba(255,255,255,0.4); transform: scale(1.04); }
-  .mem-back { font-size: 1.8rem; }
-  .mem-front { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  .mem-front .emoji { font-size: 1.5rem; }
-  .mem-front .word { font-size: 0.72rem; font-weight: 800; color: white; text-align: center; line-height: 1.1; }
+  .mem-back { font-size: clamp(2rem,5vw,2.8rem); }
+  .mem-front { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width:100%; height:100%; padding: 6px; }
+  .mem-front .big-emoji { font-size: clamp(2.4rem,6vw,3.6rem); line-height: 1; }
+  .mem-front .word-label { font-size: clamp(1rem,2.8vw,1.35rem); font-weight: 900; color: white; text-align: center; line-height: 1.2; }
+  .mem-front .word-hint { font-size: clamp(0.75rem,2vw,0.95rem); font-weight: 600; color: rgba(255,255,255,0.65); text-align: center; line-height: 1.2; }
 
   /* ── Fill Blank ── */
   .fill-choice {
@@ -165,8 +166,8 @@ function MemoryGame({ onFinish }) {
   const buildDeck = useCallback(() => {
     const cards = [];
     pool.forEach((c,i) => {
-      cards.push({ uid: `e${i}`, pairId: c.id, type:"emoji", content: c.emoji, word: c.word });
-      cards.push({ uid: `w${i}`, pairId: c.id, type:"word",  content: c.word,  word: c.word });
+      cards.push({ uid: `e${i}`, pairId: c.id, type:"emoji", content: c.emoji, word: c.word, emoji: c.emoji });
+      cards.push({ uid: `w${i}`, pairId: c.id, type:"word",  content: c.word,  word: c.word, emoji: c.emoji });
     });
     return cards.sort(() => Math.random()-0.5);
   }, []);
@@ -257,14 +258,20 @@ function MemoryGame({ onFinish }) {
               key={card.uid}
               className={`mem-card ${isFlipped||isMatched?"flipped":""} ${isMatched?"matched":""}`}
               onClick={() => flip(card.uid)}
-              style={{ minHeight:70 }}
+              style={{ minHeight:'clamp(80px,14vw,130px)' }}
             >
               {isFlipped || isMatched ? (
                 <div className="mem-front">
-                  {card.type === "emoji"
-                    ? <><span className="emoji">{card.content}</span><span className="word">{card.word}</span></>
-                    : <span style={{ fontSize:"0.95rem", fontWeight:800, color:"white", textAlign:"center", padding:"0 4px" }}>{card.content}</span>
-                  }
+                  {card.type === "emoji" ? (
+                    <>
+                      <span className="big-emoji">{card.content}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="big-emoji">{card.emoji}</span>
+                      <span className="word-label">{card.content}</span>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="mem-back">❓</div>
