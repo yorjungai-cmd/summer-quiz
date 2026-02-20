@@ -6,7 +6,7 @@ import THAI_QUESTIONS from "../questions/Thai";
 import MATH_QUESTIONS from "../questions/Math";
 
 // ==================== VERSION ====================
-const APP_VERSION = "1.2.0";
+const APP_VERSION = "1.2.2";
 
 // Lazy load MiniGames
 const MiniGamesLazy = dynamic(() => import("./MiniGames"), {
@@ -161,11 +161,11 @@ function HPBar({ current, max, color, label }) {
   const barColor = pct > 60 ? color : pct > 30 ? "#f59e0b" : "#ef4444";
   return (
     <div>
-      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3, fontSize:"0.8rem", fontWeight:700, color:"rgba(255,255,255,0.9)" }}>
-        <span style={{ overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", maxWidth:"68%" }}>{label}</span>
+      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4, fontSize:"clamp(0.95rem,2.2vw,1.15rem)", fontWeight:800, color:"rgba(255,255,255,0.95)" }}>
+        <span style={{ overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", maxWidth:"65%" }}>{label}</span>
         <span style={{ color:barColor, flexShrink:0 }}>{current}/{max}</span>
       </div>
-      <div className="hp-bar-bg">
+      <div className="hp-bar-bg" style={{ height:18 }}>
         <div className="hp-bar-fill" style={{ width:`${pct}%`, background:`linear-gradient(90deg,${barColor},${barColor}dd)` }}/>
       </div>
     </div>
@@ -380,10 +380,10 @@ function QuizScreen({ subject, questions, onFinish }) {
       style={{
         position:"relative", zIndex:1, width:"100%", height:"100vh",
         display:"flex", flexDirection:"column",
-        padding:"clamp(10px,2vh,16px) clamp(12px,3vw,20px)",
-        gap:"clamp(7px,1.5vh,12px)",
-        overflow:"hidden",
+        padding:"16px 16px 0 16px",
+        gap:12,
         boxSizing:"border-box",
+        overflow:"hidden",
       }}
     >
       {damageText && (
@@ -393,27 +393,27 @@ function QuizScreen({ subject, questions, onFinish }) {
       )}
 
       {/* Progress Bar */}
-      <div style={{ display:"flex", alignItems:"center", gap:10, position:"relative", zIndex:2, flexShrink:0 }}>
-        <div style={{ fontWeight:800, fontSize:"clamp(1rem,2.5vw,1.2rem)", color:subject.color, minWidth:80 }}>ข้อ {current+1}/{totalQ}</div>
+      <div style={{ display:"flex", alignItems:"center", gap:10, flexShrink:0 }}>
+        <div style={{ fontWeight:800, fontSize:"clamp(1.05rem,2.5vw,1.3rem)", color:subject.color, minWidth:88 }}>ข้อ {current+1}/{totalQ}</div>
         <div className="hp-bar-bg" style={{ flex:1, height:14 }}>
           <div className="hp-bar-fill" style={{ width:`${(current/totalQ)*100}%`, background:subject.gradient }}/>
         </div>
-        <div style={{ fontSize:"clamp(0.9rem,2vw,1rem)", fontWeight:700, color:"rgba(255,255,255,0.6)", minWidth:50, textAlign:"right" }}>{Object.keys(answers).length}/{totalQ}</div>
+        <div style={{ fontSize:"clamp(1rem,2vw,1.1rem)", fontWeight:700, color:"rgba(255,255,255,0.6)", minWidth:54, textAlign:"right" }}>{Object.keys(answers).length}/{totalQ}</div>
       </div>
 
-      {/* Battle — compact, shrink emoji on small height */}
-      <div className="card" style={{ padding:"clamp(8px,1.5vh,14px) clamp(10px,2vw,16px)", display:"flex", gap:12, alignItems:"center", position:"relative", zIndex:2, flexShrink:0 }}>
+      {/* Battle */}
+      <div className="card" style={{ padding:"clamp(10px,1.8vh,16px) clamp(12px,2vw,18px)", display:"flex", gap:12, alignItems:"center", flexShrink:0 }}>
         <div style={{ flex:1 }}>
           <HPBar current={heroHP} max={totalQ} color="#22c55e" label={`${subject.hero} ซัมเมอร์`}/>
-          <div style={{ textAlign:"center", fontSize:"clamp(2rem,5vh,3.2rem)", marginTop:4, lineHeight:1,
+          <div style={{ textAlign:"center", fontSize:"clamp(2.2rem,6vh,4rem)", marginTop:6, lineHeight:1,
             animation:animState==="attack"?"hero-attack 0.5s ease":animState==="hurt"?"hero-hurt 0.4s ease":"monster-idle 3s ease-in-out infinite" }}>
             {subject.hero}
           </div>
         </div>
-        <div style={{ fontWeight:900, fontSize:"clamp(1rem,2.5vh,1.3rem)", color:"#ffd700", textShadow:"0 0 10px rgba(255,215,0,0.7)", flexShrink:0, textAlign:"center", lineHeight:1.4 }}>⚔️<br/>VS</div>
+        <div style={{ fontWeight:900, fontSize:"clamp(1.1rem,2.5vh,1.4rem)", color:"#ffd700", textShadow:"0 0 10px rgba(255,215,0,0.7)", flexShrink:0, textAlign:"center", lineHeight:1.5 }}>⚔️<br/>VS</div>
         <div style={{ flex:1 }}>
           <HPBar current={monsterHP} max={totalQ} color="#ef4444" label={`${subject.monster} ${subject.monsterName}`}/>
-          <div style={{ textAlign:"center", fontSize:"clamp(2rem,5vh,3.2rem)", marginTop:4, lineHeight:1,
+          <div style={{ textAlign:"center", fontSize:"clamp(2.2rem,6vh,4rem)", marginTop:6, lineHeight:1,
             animation:animState==="attack"?"monster-hurt 0.5s ease":"monster-idle 2.5s ease-in-out infinite", display:"inline-block", width:"100%" }}>
             {monsterHP<=0?"💀":subject.monster}
           </div>
@@ -421,53 +421,58 @@ function QuizScreen({ subject, questions, onFinish }) {
       </div>
 
       {/* Question */}
-      <div className="card" style={{ padding:"clamp(10px,2vh,16px) clamp(12px,2vw,18px)", position:"relative", zIndex:2, flexShrink:0 }}>
-        <div style={{ fontSize:"clamp(0.8rem,1.8vw,0.95rem)", fontWeight:600, color:subject.color, marginBottom:4 }}>📖 {q.topic}</div>
-        <div style={{ fontSize:"clamp(1.15rem,3vw,1.45rem)", fontWeight:700, color:"white", lineHeight:1.4 }}>{q.question}</div>
+      <div className="card" style={{ padding:"clamp(12px,2vh,18px) clamp(14px,2vw,20px)", flexShrink:0 }}>
+        <div style={{ fontSize:"clamp(0.85rem,1.8vw,1rem)", fontWeight:600, color:subject.color, marginBottom:5 }}>📖 {q.topic}</div>
+        <div style={{ fontSize:"clamp(1.2rem,3vw,1.55rem)", fontWeight:700, color:"white", lineHeight:1.45 }}>{q.question}</div>
       </div>
 
-      {/* Choices — 2 columns, auto height (NOT flex:1 — that's what caused the bug) */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"clamp(6px,1.2vh,10px)", flexShrink:0, position:"relative", zIndex:2 }}>
+      {/* Choices */}
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, flexShrink:0 }}>
         {q.choices.map((c,i) => (
           <button
             key={i}
             className={`choice-btn${selected===i?" selected":""}`}
             onClick={()=>!confirmed&&setSelected(i)}
             disabled={confirmed}
-            style={{ padding:"clamp(12px,2vh,18px) clamp(10px,2vw,16px)", minHeight:"clamp(60px,9vh,90px)", alignItems:"center" }}
+            style={{ padding:"clamp(14px,2.2vh,22px) clamp(12px,2vw,18px)", minHeight:"clamp(64px,10vh,100px)" }}
           >
             <span style={{
-              width:"clamp(30px,4vw,40px)", height:"clamp(30px,4vw,40px)", borderRadius:"50%", flexShrink:0,
+              width:"clamp(34px,4.5vw,46px)", height:"clamp(34px,4.5vw,46px)",
+              borderRadius:"50%", flexShrink:0,
               background:selected===i?"rgba(168,85,247,0.6)":"rgba(255,255,255,0.15)",
               display:"flex", alignItems:"center", justifyContent:"center",
-              fontWeight:800, fontSize:"clamp(1rem,2.5vw,1.2rem)",
+              fontWeight:900, fontSize:"clamp(1.05rem,2.8vw,1.3rem)",
               border:selected===i?"2px solid #a855f7":"2px solid rgba(255,255,255,0.2)"
             }}>
               {LABELS[i]}
             </span>
-            <span style={{ flex:1, fontSize:"clamp(1.05rem,2.8vw,1.3rem)", lineHeight:1.35, textAlign:"left" }}>{c}</span>
+            <span style={{ flex:1, fontSize:"clamp(1.1rem,2.8vw,1.4rem)", lineHeight:1.35, textAlign:"left" }}>{c}</span>
           </button>
         ))}
       </div>
 
-      {/* Action Button — always visible at bottom */}
-      <div style={{ position:"relative", zIndex:2, flexShrink:0, marginTop:"auto" }}>
+      {/* Spacer so content clears the fixed button */}
+      <div style={{ flexShrink:0, minHeight:86 }}/>
+
+      {/* Action Button — position:fixed bottom, ALWAYS visible on every device */}
+      <div style={{ position:"fixed", bottom:0, left:0, right:0, padding:"12px 16px 16px", zIndex:50,
+        background:"linear-gradient(to top, rgba(10,3,24,1) 60%, transparent)" }}>
         {!confirmed ? (
           <button className="btn" onClick={handleConfirm} disabled={selected===null} style={{
-            width:"100%", padding:"clamp(14px,2.5vh,20px)", borderRadius:16,
+            width:"100%", height:70, borderRadius:18,
             background:selected!==null?subject.gradient:"rgba(255,255,255,0.1)",
-            color:"white", fontSize:"clamp(1.1rem,3vw,1.35rem)", fontWeight:800, border:"none",
-            opacity:selected!==null?1:0.45, transition:"all 0.2s",
-            boxShadow:selected!==null?`0 8px 24px ${subject.color}60`:"none",
+            color:"white", fontSize:"clamp(1.15rem,3vw,1.45rem)", fontWeight:800, border:"none",
+            opacity:selected!==null?1:0.4, transition:"all 0.2s",
+            boxShadow:selected!==null?`0 8px 28px ${subject.color}70`:"none",
           }}>
             ⚔️ ยืนยันคำตอบ!
           </button>
         ) : (
           <button className="btn" onClick={handleNext} style={{
-            width:"100%", padding:"clamp(14px,2.5vh,20px)", borderRadius:16,
+            width:"100%", height:70, borderRadius:18,
             background:isLast?"linear-gradient(135deg,#ffd700,#ff6b35)":"linear-gradient(135deg,#22c55e,#16a34a)",
-            color:"white", fontSize:"clamp(1.1rem,3vw,1.35rem)", fontWeight:800, border:"none",
-            boxShadow:isLast?"0 8px 24px rgba(255,215,0,0.5)":"0 8px 24px rgba(34,197,94,0.5)",
+            color:"white", fontSize:"clamp(1.15rem,3vw,1.45rem)", fontWeight:800, border:"none",
+            boxShadow:isLast?"0 8px 28px rgba(255,215,0,0.6)":"0 8px 28px rgba(34,197,94,0.6)",
           }}>
             {isLast?"🏁 ดูผลคะแนน!":"ข้อถัดไป →"}
           </button>
