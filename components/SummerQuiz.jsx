@@ -1,3 +1,4 @@
+"use client";
 // ==================== IMPORTS ====================
 import { useState } from "react";
 import THAI_QUESTIONS from "../questions/Thai";
