@@ -1,11 +1,20 @@
-"use client";
 // ==================== IMPORTS ====================
 import { useState } from "react";
 import THAI_QUESTIONS from "../questions/Thai";
 import MATH_QUESTIONS from "../questions/Math";
 
+// ==================== MINI GAMES (lazy import) ====================
+// MiniGames is loaded separately to keep this file lean
 // ==================== VERSION ====================
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.1.0";
+
+// Lazy load MiniGames to keep initial bundle small
+import dynamic from "next/dynamic";
+const MiniGamesLazy = dynamic(() => import("./MiniGames"), { ssr: false, loading: () => (
+  <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"100vh", background:"#0f0524", color:"white", fontFamily:"Kanit, sans-serif", fontSize:"1.2rem" }}>
+    🎮 กำลังโหลดเกมส์...
+  </div>
+)});
 
 // ==================== QUESTION BANK ====================
 const QUESTION_BANK = {
@@ -180,7 +189,7 @@ function Confetti({ count=60 }) {
 }
 
 // ==================== SCREENS ====================
-function HomeScreen({ onSelectSubject, stats }) {
+function HomeScreen({ onSelectSubject, stats, onOpenMini }) {
   const level = stats.level;
   const expForNext = level * 100;
   const expPct = (stats.exp % expForNext) / expForNext * 100;
@@ -254,6 +263,22 @@ function HomeScreen({ onSelectSubject, stats }) {
           ))}
         </div>
       </div>
+
+      {/* Mini Games Button */}
+      <button
+        className="btn"
+        onClick={onOpenMini}
+        style={{
+          width:"100%", padding:"14px", borderRadius:16,
+          background:"linear-gradient(135deg,rgba(168,85,247,0.3),rgba(124,58,237,0.4))",
+          color:"white", fontSize:"1.05rem", fontWeight:800,
+          border:"2px solid rgba(168,85,247,0.5)",
+          position:"relative", zIndex:2,
+          boxShadow:"0 4px 16px rgba(168,85,247,0.3)",
+        }}
+      >
+        🎮 เกมส์เสริมความจำ &nbsp;<span style={{ fontSize:"0.8rem", opacity:0.8, fontWeight:500 }}>(จับคู่ • เติมคำ • เรียงประโยค)</span>
+      </button>
 
       {/* Footer with version */}
       <div style={{ textAlign:"center", position:"relative", zIndex:2 }}>
@@ -530,6 +555,7 @@ function ReviewScreen({ subject, questions, answers, onHome }) {
 // ==================== MAIN APP ====================
 export default function App() {
   const [screen, setScreen] = useState("home");
+  const [showMini, setShowMini] = useState(false);
   const [subject, setSubject] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
@@ -558,7 +584,7 @@ export default function App() {
       <style>{GLOBAL_STYLE}</style>
       <div className="app-root">
         <div className="stars"/>
-        {screen==="home"    && <HomeScreen onSelectSubject={s=>{setSubject(s);setScreen("config")}} stats={stats}/>}
+        {screen==="home"    && <HomeScreen onSelectSubject={s=>{setSubject(s);setScreen("config")}} stats={stats} onOpenMini={()=>setShowMini(true)}/>}
         {screen==="config"  && subject && <ConfigScreen subject={subject} onStart={startQuiz} onBack={()=>setScreen("home")}/>}
         {screen==="quiz"    && subject && <QuizScreen key={questions.map(q=>q.id).join("-")} subject={subject} questions={questions} onFinish={finishQuiz}/>}
         {screen==="results" && subject && <ResultsScreen subject={subject} questions={questions} answers={answers} stats={stats} onReview={()=>setScreen("review")} onHome={()=>setScreen("home")} onRetry={()=>startQuiz(questions.length)}/>}
