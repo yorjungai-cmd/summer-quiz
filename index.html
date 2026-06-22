@@ -3,861 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🌟 IN, ON &amp; AT Adventure with Summer!</title>
+<title>🌟 Summer's Learning World</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow-x:hidden;}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#1a1a2e;user-select:none;-webkit-user-select:none;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#1a1a2e;user-select:none;-webkit-user-select:none;min-height:100vh;}
+
+/* ── BACKGROUND STARS ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 20% 20%,rgba(78,205,196,.15) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 80%,rgba(155,89,182,.15) 0%,transparent 60%),
+             radial-gradient(ellipse at 50% 50%,rgba(255,107,107,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
 
 /* ── HEADER ── */
-.hdr{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 14px;gap:10px;background:rgba(20,20,40,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);}
-.hdr-title{font-size:13px;font-weight:800;color:#fff;white-space:nowrap;}
-.hdr-bar{flex:1;background:rgba(255,255,255,.15);border-radius:10px;height:9px;overflow:hidden;}
-.hdr-fill{height:100%;background:linear-gradient(90deg,#FFE66D,#FF9500);border-radius:10px;transition:width .5s ease;width:0%;}
-.hdr-stars{font-size:18px;font-weight:800;color:#FFD700;white-space:nowrap;}
-
-/* ── SCREENS ── */
-.main{padding-top:56px;}
-.screen{display:none;min-height:calc(100vh - 56px);padding:18px 14px 48px;max-width:600px;margin:0 auto;}
-.screen.active{display:block;}
-.bg-w{background:linear-gradient(150deg,#0f0c29,#302b63,#24243e);}
-.bg-t{background:linear-gradient(150deg,#0d2137,#1a4a7a);}
-.bg-1{background:linear-gradient(150deg,#004d40,#00796b);}
-.bg-2{background:linear-gradient(150deg,#4a148c,#7b1fa2);}
-.bg-3{background:linear-gradient(150deg,#b71c1c,#e53935);}
-.bg-r{background:linear-gradient(150deg,#1b5e20,#388e3c);}
-
-/* ── WELCOME ── */
-.wc-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100vh - 100px);padding:10px 0;}
-.mascot{font-size:88px;animation:float 2.2s ease-in-out infinite alternate;display:block;margin-bottom:14px;}
-@keyframes float{from{transform:translateY(0) rotate(-4deg);}to{transform:translateY(-18px) rotate(4deg);}}
-.wc-title{font-size:36px;font-weight:900;color:#fff;text-shadow:3px 3px 0 rgba(0,0,0,.3);line-height:1.1;margin-bottom:6px;}
-.wc-badges{display:flex;gap:10px;justify-content:center;margin-bottom:10px;}
-.wb{border-radius:16px;padding:8px 20px;font-size:24px;font-weight:900;color:#fff;}
-.wb-in{background:#4ECDC4;} .wb-on{background:#FF6B6B;} .wb-at{background:#9b59b6;}
-.wc-name{font-size:22px;font-weight:800;color:#FFE66D;margin-bottom:28px;}
-.btn-start{background:linear-gradient(135deg,#FFE66D,#FF9500);border:none;border-radius:50px;padding:18px 0;font-size:24px;font-weight:900;color:#1a1a2e;cursor:pointer;width:100%;max-width:300px;box-shadow:0 8px 25px rgba(255,149,0,.5),0 0 0 5px rgba(255,230,109,.25);animation:glow 2s ease-in-out infinite;margin-bottom:12px;}
-@keyframes glow{0%,100%{box-shadow:0 8px 25px rgba(255,149,0,.5),0 0 0 5px rgba(255,230,109,.25);}50%{box-shadow:0 8px 35px rgba(255,149,0,.7),0 0 0 14px rgba(255,230,109,.08);}}
-.btn-start:active{transform:scale(.93);animation:none;}
-.wc-info{font-size:13px;color:rgba(255,255,255,.45);}
-
-/* ── TUTORIAL ── */
-.tut-hd{text-align:center;margin-bottom:16px;}
-.tut-hd h2{font-size:24px;font-weight:900;color:#fff;margin-bottom:5px;}
-.tut-hd p{font-size:14px;color:rgba(255,255,255,.65);}
-.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
-.rule-full{margin-bottom:14px;}
-.rule-card{border-radius:20px;padding:16px 12px;text-align:center;color:#fff;}
-.rc-in{background:linear-gradient(135deg,#4ECDC4,#00897b);}
-.rc-on{background:linear-gradient(135deg,#FF6B6B,#c62828);}
-.rc-at{background:linear-gradient(135deg,#9b59b6,#6c3483);}
-.rule-word{font-size:46px;font-weight:900;display:block;text-shadow:2px 2px 0 rgba(0,0,0,.2);margin-bottom:4px;}
-.rule-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;opacity:.8;margin-bottom:8px;}
-.rule-exs{display:flex;flex-direction:column;gap:4px;}
-.rule-ex{background:rgba(255,255,255,.2);border-radius:9px;padding:5px 8px;font-size:12px;font-weight:600;}
-.tut-rows{margin-bottom:18px;}
-.tut-rows h3{color:rgba(255,255,255,.75);font-size:12px;text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:10px;}
-.ex-row{background:rgba(255,255,255,.1);border-radius:14px;padding:11px 12px;margin-bottom:7px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .2s,transform .15s;}
-.ex-row:active{transform:scale(.97);}
-.ex-badge{flex-shrink:0;width:42px;height:42px;border-radius:11px;font-size:16px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;}
-.eb-in{background:#4ECDC4;} .eb-on{background:#FF6B6B;} .eb-at{background:#9b59b6;}
-.ex-sent{font-size:15px;font-weight:600;color:#fff;}
-.ex-note{font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;}
-.ex-hl{background:rgba(255,255,255,.25);border-radius:6px;padding:1px 6px;font-weight:900;}
-.tut-cta{text-align:center;}
-.btn-go{background:linear-gradient(135deg,#FFE66D,#FF9500);border:none;border-radius:50px;padding:15px 0;font-size:20px;font-weight:900;color:#1a1a2e;cursor:pointer;width:100%;box-shadow:0 6px 0 #b36200;transition:transform .1s;}
-.btn-go:active{transform:translateY(6px);box-shadow:0 0 0 transparent;}
-
-/* ── ACTIVITY HEADER ── */
-.act-hd{text-align:center;margin-bottom:14px;}
-.act-badge{display:inline-block;background:rgba(255,255,255,.2);border-radius:50px;padding:3px 12px;font-size:10px;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:7px;}
-.act-title{font-size:22px;font-weight:900;color:#fff;margin-bottom:4px;}
-.act-desc{font-size:13px;color:rgba(255,255,255,.65);}
-
-/* ── RULE REMINDER (3 items) ── */
-.rr{background:rgba(255,255,255,.1);border-radius:12px;padding:8px 10px;margin-bottom:12px;display:flex;gap:6px;}
-.rr-item{flex:1;text-align:center;border-radius:9px;padding:6px 2px;}
-.rri-in{background:rgba(78,205,196,.2);}
-.rri-on{background:rgba(255,107,107,.2);}
-.rri-at{background:rgba(155,89,182,.2);}
-.rr-word{font-size:18px;font-weight:900;}
-.rri-in .rr-word{color:#7df5ef;} .rri-on .rr-word{color:#ff9b9b;} .rri-at .rr-word{color:#cf9ff5;}
-.rr-for{font-size:9px;color:rgba(255,255,255,.55);line-height:1.3;}
-
-/* ── Q CARD ── */
-.qc{background:#fff;border-radius:22px;padding:20px 16px 16px;box-shadow:0 10px 40px rgba(0,0,0,.3);position:relative;overflow:hidden;}
-.qc::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#4ECDC4,#FF6B6B,#9b59b6);}
-.q-cnt{text-align:center;font-size:11px;font-weight:700;color:rgba(255,255,255,.55);letter-spacing:.5px;margin-bottom:10px;}
-.q-sent{font-size:20px;font-weight:600;color:#1a1a2e;line-height:1.65;margin-bottom:16px;text-align:center;}
-.q-blank{display:inline-block;min-width:72px;background:#f2f2f2;border:2px dashed #ccc;border-radius:10px;padding:3px 10px;font-weight:900;text-align:center;transition:all .3s;vertical-align:middle;}
-.q-blank.correct{background:#d4f1e4;border:2px solid #28a745;color:#28a745;}
-.q-blank.wrong{background:#fde8e8;border:2px solid #dc3545;color:#dc3545;}
-
-/* ── 3-CHOICE BUTTONS ── */
-.choices{display:flex;gap:10px;}
-.ch{flex:1;padding:15px 4px;border:none;border-radius:16px;font-size:24px;font-weight:900;cursor:pointer;transition:transform .1s;box-shadow:0 5px 0;letter-spacing:1px;color:#fff;}
-.ch-in{background:#4ECDC4;box-shadow:0 5px 0 #2b9e97;}
-.ch-on{background:#FF6B6B;box-shadow:0 5px 0 #c94444;}
-.ch-at{background:#9b59b6;box-shadow:0 5px 0 #6c3483;}
-.ch:active:not(:disabled){transform:translateY(5px);box-shadow:0 0 0 transparent!important;}
-.ch:disabled{opacity:.35;cursor:default;}
-.ch.sel-ok{background:#28a745!important;box-shadow:0 5px 0 #1a6b30!important;opacity:1!important;}
-.ch.sel-no{background:#dc3545!important;box-shadow:0 5px 0 #a01c2a!important;opacity:1!important;}
-.fb{text-align:center;font-size:15px;font-weight:700;padding:10px 12px;border-radius:13px;margin-top:11px;display:none;animation:popIn .3s ease;line-height:1.4;}
-.fb.ok{display:block;background:#d4f1e4;color:#1a7a3c;}
-.fb.no{display:block;background:#fde8e8;color:#9c1a1a;}
-@keyframes popIn{0%{transform:scale(.5);opacity:0;}70%{transform:scale(1.05);}100%{transform:scale(1);opacity:1;}}
-.btn-nxt{width:100%;background:linear-gradient(135deg,#FFE66D,#FF9500);border:none;border-radius:16px;padding:14px;font-size:18px;font-weight:900;color:#1a1a2e;cursor:pointer;margin-top:11px;display:none;box-shadow:0 5px 0 #b36200;transition:transform .1s;}
-.btn-nxt.show{display:block;}
-.btn-nxt:active{transform:translateY(5px);box-shadow:0 0 0 transparent;}
-@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-10px);}40%{transform:translateX(10px);}60%{transform:translateX(-10px);}80%{transform:translateX(10px);}}
-.shake{animation:shake .45s ease;}
-
-/* ── DRAG & DROP ── */
-.pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;background:rgba(255,255,255,.1);border-radius:18px;padding:12px;min-height:76px;margin-bottom:14px;}
-.chip{background:#fff;border-radius:50px;padding:10px 16px;font-size:15px;font-weight:800;color:#1a1a2e;box-shadow:0 4px 12px rgba(0,0,0,.25);cursor:grab;touch-action:none;display:flex;align-items:center;gap:6px;transition:opacity .2s;}
-.chip.dragging-src{opacity:.2;}
-.chip.chip-placed{display:none;}
-.drag-clone{position:fixed;pointer-events:none;z-index:9999;border-radius:50px;padding:10px 16px;font-size:15px;font-weight:800;color:#1a1a2e;background:#fff;box-shadow:0 12px 35px rgba(0,0,0,.45);display:flex;align-items:center;gap:6px;transform:scale(1.08);}
-
-/* 3 drop zones */
-.zones{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
-.zone{border-radius:18px;padding:10px 8px;min-height:140px;border:3px dashed rgba(255,255,255,.3);transition:border-color .2s,background .2s;}
-.zone-in{background:rgba(78,205,196,.15);}
-.zone-on{background:rgba(255,107,107,.15);}
-.zone-at{background:rgba(155,89,182,.15);}
-.zone.over{border-color:#fff;background:rgba(255,255,255,.2);}
-.z-head{text-align:center;font-size:32px;font-weight:900;color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,.2);margin-bottom:3px;}
-.z-lbl{text-align:center;font-size:9px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;line-height:1.3;}
-.z-words{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;min-height:30px;}
-.dchip{border-radius:50px;padding:6px 10px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:4px;}
-.dc-ok{background:rgba(40,167,69,.25);color:#a8edbc;border:2px solid rgba(40,167,69,.45);}
-.dc-no{background:rgba(220,53,69,.25);color:#f7b8c0;border:2px solid rgba(220,53,69,.45);animation:shake .4s ease;}
-.drag-info{text-align:center;color:rgba(255,255,255,.7);font-size:14px;font-weight:700;margin:8px 0;}
-.btn-fin{width:100%;background:linear-gradient(135deg,#FFE66D,#FF9500);border:none;border-radius:16px;padding:14px;font-size:18px;font-weight:900;color:#1a1a2e;cursor:pointer;margin-top:4px;display:none;box-shadow:0 5px 0 #b36200;transition:transform .1s;}
-.btn-fin.show{display:block;}
-.btn-fin:active{transform:translateY(5px);box-shadow:0 0 0 transparent;}
-
-/* ── RESULTS ── */
-.res-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 100px);}
-.res-card{background:#fff;border-radius:28px;padding:36px 24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35);width:100%;max-width:420px;}
-.res-trophy{font-size:78px;display:block;margin-bottom:10px;animation:tBounce .5s ease .3s both;}
-@keyframes tBounce{0%{transform:scale(0) rotate(-20deg);}60%{transform:scale(1.2) rotate(5deg);}100%{transform:scale(1) rotate(0);}}
-.res-title{font-size:28px;font-weight:900;color:#1a1a2e;margin-bottom:5px;}
-.res-sub{font-size:16px;color:#666;margin-bottom:16px;}
-.res-stars{font-size:44px;margin-bottom:6px;animation:sPop .5s ease .6s both;}
-@keyframes sPop{0%{transform:scale(0);}70%{transform:scale(1.2);}100%{transform:scale(1);}}
-.res-score{font-size:22px;font-weight:800;color:#FF9500;margin-bottom:5px;}
-.res-msg{font-size:14px;color:#888;margin-bottom:24px;}
-.btn-again{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:50px;padding:14px 40px;font-size:18px;font-weight:800;cursor:pointer;width:100%;box-shadow:0 5px 0 #4a35a0;transition:transform .1s;}
-.btn-again:active{transform:translateY(5px);box-shadow:0 0 0 transparent;}
-
-/* ── OVERLAY ── */
-.overlay{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.65);backdrop-filter:blur(5px);}
-.overlay.show{display:flex;}
-.ov-box{background:#fff;border-radius:26px;padding:36px 28px;text-align:center;max-width:330px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:popIn .4s ease;}
-.ov-icon{font-size:62px;display:block;margin-bottom:10px;}
-.ov-title{font-size:24px;font-weight:900;color:#1a1a2e;margin-bottom:7px;}
-.ov-score{font-size:16px;color:#666;margin-bottom:20px;}
-.btn-ov{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:50px;padding:13px 40px;font-size:17px;font-weight:800;cursor:pointer;width:100%;box-shadow:0 5px 0 #4a35a0;transition:transform .1s;}
-.btn-ov:active{transform:translateY(5px);box-shadow:0 0 0 transparent;}
-
-/* ── PARTICLES ── */
-.particle{position:fixed;pointer-events:none;z-index:9998;border-radius:50%;animation:pFly var(--dur,.6s) ease-out forwards;}
-@keyframes pFly{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--tx,0),var(--ty,-80px)) scale(0);opacity:0;}}
-.confetti-p{position:fixed;pointer-events:none;z-index:9997;animation:cFall var(--dur,1.4s) ease-in var(--delay,0s) forwards;}
-@keyframes cFall{0%{transform:translateY(-30px) rotate(0deg);opacity:1;}100%{transform:translateY(105vh) rotate(720deg);opacity:0;}}
-
-@media(max-width:380px){
-  .q-sent{font-size:17px;}
-  .ch{font-size:20px;padding:13px 2px;}
-  .wc-title{font-size:30px;}
-  .chip{font-size:13px;padding:8px 12px;}
-  .z-head{font-size:26px;}
-  .zones{gap:6px;}
+.hdr{
+  text-align:center;padding:36px 20px 0;
 }
+.hdr-emoji{font-size:56px;display:block;margin-bottom:8px;animation:float 3s ease-in-out infinite;}
+.hdr-title{font-size:26px;font-weight:900;color:#fff;letter-spacing:.5px;}
+.hdr-sub{font-size:14px;color:rgba(255,255,255,.5);margin-top:6px;font-weight:500;}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ── GRID ── */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  max-width:560px;
+  margin:32px auto 0;
+  padding:0 16px 48px;
+}
+
+/* ── SUBJECT CARD ── */
+.card{
+  border-radius:22px;
+  padding:24px 16px 20px;
+  text-decoration:none;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  position:relative;overflow:hidden;
+  transition:transform .15s,box-shadow .15s;
+  -webkit-tap-highlight-color:transparent;
+  border:2px solid rgba(255,255,255,.1);
+  cursor:pointer;
+}
+.card:active{transform:scale(.96);}
+.card.available{box-shadow:0 8px 32px rgba(0,0,0,.4);}
+.card.available:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.5);}
+.card.soon{opacity:.55;cursor:default;filter:grayscale(.4);}
+
+.card-eng  {background:linear-gradient(145deg,#004d40,#00897b);}
+.card-comp {background:linear-gradient(145deg,#1a237e,#3949ab);}
+.card-math {background:linear-gradient(145deg,#4a148c,#7b1fa2);}
+.card-sci  {background:linear-gradient(145deg,#b71c1c,#e53935);}
+
+.card-icon{font-size:44px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));}
+.card-subject{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px;}
+.card-topic{font-size:14px;font-weight:800;color:#fff;text-align:center;line-height:1.3;}
+.card-thai{font-size:12px;color:rgba(255,255,255,.6);font-weight:500;}
+
+.badge-new{
+  position:absolute;top:10px;right:10px;
+  background:#FFE66D;color:#333;
+  font-size:10px;font-weight:900;
+  padding:2px 8px;border-radius:20px;
+  letter-spacing:.5px;
+}
+.badge-soon{
+  position:absolute;top:10px;right:10px;
+  background:rgba(255,255,255,.2);color:rgba(255,255,255,.8);
+  font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:20px;
+  letter-spacing:.5px;
+}
+
+/* ── FOOTER ── */
+.footer{text-align:center;color:rgba(255,255,255,.25);font-size:12px;padding-bottom:24px;}
+
+/* ── SPARKLE PARTICLES ── */
+.sparkle{position:fixed;pointer-events:none;font-size:20px;animation:sp 1.2s ease-out forwards;}
+@keyframes sp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(.4)}}
 </style>
 </head>
 <body>
 
 <header class="hdr">
-  <div class="hdr-title">✨ IN · ON · AT</div>
-  <div class="hdr-bar"><div class="hdr-fill" id="hdrFill"></div></div>
-  <div class="hdr-stars" id="hdrStars">⭐ 0</div>
+  <span class="hdr-emoji">🌟</span>
+  <div class="hdr-title">Summer's Learning World</div>
+  <div class="hdr-sub">โลกแห่งการเรียนรู้ของซัมเมอร์</div>
 </header>
 
-<div class="main">
+<div class="grid">
 
-<!-- ── WELCOME ── -->
-<div class="screen bg-w active" id="s-welcome">
-  <div class="wc-inner">
-    <span class="mascot">🦁</span>
-    <h1 class="wc-title">Learn<br>IN · ON · AT!</h1>
-    <div class="wc-badges">
-      <span class="wb wb-in">IN</span>
-      <span class="wb wb-on">ON</span>
-      <span class="wb wb-at">AT</span>
-    </div>
-    <p class="wc-name">Hi Summer! Let's play! 🎈</p>
-    <button class="btn-start" onclick="go('s-tutorial')">Let's Go! 🚀</button>
-    <p class="wc-info">3 activities · New questions every round! 🎲</p>
+  <!-- English: Prepositions -->
+  <a class="card card-eng available" href="/prepositions/">
+    <span class="badge-new">NEW</span>
+    <div class="card-icon">📚</div>
+    <div class="card-subject">English</div>
+    <div class="card-topic">Prepositions of Time</div>
+    <div class="card-thai">IN · ON · AT</div>
+  </a>
+
+  <!-- Computer Science -->
+  <a class="card card-comp available" href="/computer/">
+    <span class="badge-new">NEW</span>
+    <div class="card-icon">💻</div>
+    <div class="card-subject">Computer</div>
+    <div class="card-topic">Coming Soon!</div>
+    <div class="card-thai">คอมพิวเตอร์</div>
+  </a>
+
+  <!-- Math placeholder -->
+  <div class="card card-math soon">
+    <span class="badge-soon">SOON</span>
+    <div class="card-icon">🔢</div>
+    <div class="card-subject">Math</div>
+    <div class="card-topic">Numbers &amp; More</div>
+    <div class="card-thai">คณิตศาสตร์</div>
   </div>
+
+  <!-- Science placeholder -->
+  <div class="card card-sci soon">
+    <span class="badge-soon">SOON</span>
+    <div class="card-icon">🔬</div>
+    <div class="card-subject">Science</div>
+    <div class="card-topic">Explore!</div>
+    <div class="card-thai">วิทยาศาสตร์</div>
+  </div>
+
 </div>
 
-<!-- ── TUTORIAL ── -->
-<div class="screen bg-t" id="s-tutorial">
-  <div class="tut-hd">
-    <h2>📚 Learn the Rules!</h2>
-    <p>Tap each example to see how it works</p>
-  </div>
-
-  <div class="rules-grid">
-    <div class="rule-card rc-in">
-      <span class="rule-word">IN</span>
-      <div class="rule-lbl">Use for…</div>
-      <div class="rule-exs">
-        <div class="rule-ex">🗓️ Months</div>
-        <div class="rule-ex">🍂 Seasons</div>
-        <div class="rule-ex">📆 Years</div>
-      </div>
-    </div>
-    <div class="rule-card rc-on">
-      <span class="rule-word">ON</span>
-      <div class="rule-lbl">Use for…</div>
-      <div class="rule-exs">
-        <div class="rule-ex">📌 Specific Dates</div>
-        <div class="rule-ex">📋 Days of Week</div>
-      </div>
-    </div>
-  </div>
-  <div class="rule-full">
-    <div class="rule-card rc-at">
-      <span class="rule-word">AT</span>
-      <div class="rule-lbl">Use for…</div>
-      <div class="rule-exs" style="flex-direction:row;justify-content:center;flex-wrap:wrap;gap:6px;">
-        <div class="rule-ex">⏰ Clock times</div>
-        <div class="rule-ex">🌙 Night / Noon</div>
-        <div class="rule-ex">🎄 Holidays</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="tut-rows">
-    <h3>👆 Tap to see examples!</h3>
-    <div class="ex-row" onclick="pingRow(this)">
-      <div class="ex-badge eb-in">IN</div>
-      <div><div class="ex-sent"><span class="ex-hl">In January</span>, it's cold! ❄️</div><div class="ex-note">January is a month → use IN</div></div>
-    </div>
-    <div class="ex-row" onclick="pingRow(this)">
-      <div class="ex-badge eb-in">IN</div>
-      <div><div class="ex-sent">Leaves fall <span class="ex-hl">in the autumn</span>! 🍂</div><div class="ex-note">Autumn is a season → use IN</div></div>
-    </div>
-    <div class="ex-row" onclick="pingRow(this)">
-      <div class="ex-badge eb-on">ON</div>
-      <div><div class="ex-sent">🎂 <span class="ex-hl">On October 12th</span>, it's my birthday!</div><div class="ex-note">October 12th is a specific date → use ON</div></div>
-    </div>
-    <div class="ex-row" onclick="pingRow(this)">
-      <div class="ex-badge eb-on">ON</div>
-      <div><div class="ex-sent">🎒 <span class="ex-hl">On Mondays</span>, we go to school!</div><div class="ex-note">Monday is a day of the week → use ON</div></div>
-    </div>
-    <div class="ex-row" onclick="pingRow(this)">
-      <div class="ex-badge eb-at">AT</div>
-      <div><div class="ex-sent">🕒 School ends <span class="ex-hl">at 3 o'clock</span>!</div><div class="ex-note">3 o'clock is a specific time → use AT</div></div>
-    </div>
-    <div class="ex-row" onclick="pingRow(this)">
-      <div class="ex-badge eb-at">AT</div>
-      <div><div class="ex-sent">🌞 We eat lunch <span class="ex-hl">at noon</span>!</div><div class="ex-note">Noon is a specific time point → use AT</div></div>
-    </div>
-    <div class="ex-row" onclick="pingRow(this)">
-      <div class="ex-badge eb-at">AT</div>
-      <div><div class="ex-sent">🌙 I read my book <span class="ex-hl">at night</span>.</div><div class="ex-note">Night is a time point → use AT</div></div>
-    </div>
-    <div class="ex-row" onclick="pingRow(this)">
-      <div class="ex-badge eb-at">AT</div>
-      <div><div class="ex-sent">🎄 We sing songs <span class="ex-hl">at Christmas</span>!</div><div class="ex-note">Christmas is a holiday/event → use AT</div></div>
-    </div>
-  </div>
-  <div class="tut-cta">
-    <button class="btn-go" onclick="startA1()">I'm Ready! Let's Play! 🎮</button>
-  </div>
-</div>
-
-<!-- ── ACTIVITY 1 ── -->
-<div class="screen bg-1" id="s-a1">
-  <div class="act-hd">
-    <div class="act-badge">Activity 1 of 3</div>
-    <h2 class="act-title">✏️ Fill in the Blank!</h2>
-    <p class="act-desc">Tap IN, ON or AT to finish each sentence</p>
-  </div>
-  <div class="rr">
-    <div class="rr-item rri-in"><div class="rr-word">IN</div><div class="rr-for">Months<br>Seasons · Years</div></div>
-    <div class="rr-item rri-on"><div class="rr-word">ON</div><div class="rr-for">Dates<br>Days of week</div></div>
-    <div class="rr-item rri-at"><div class="rr-word">AT</div><div class="rr-for">Times<br>Night · Noon</div></div>
-  </div>
-  <div class="q-cnt" id="a1-cnt">Question 1 of 12</div>
-  <div class="qc" id="a1-card">
-    <div class="q-sent" id="a1-sent"></div>
-    <div class="choices">
-      <button class="ch ch-in" id="a1-btn-in" onclick="ans1('IN')">IN</button>
-      <button class="ch ch-on" id="a1-btn-on" onclick="ans1('ON')">ON</button>
-      <button class="ch ch-at" id="a1-btn-at" onclick="ans1('AT')">AT</button>
-    </div>
-    <div class="fb" id="a1-fb"></div>
-    <button class="btn-nxt" id="a1-nxt" onclick="next1()">Next ➡️</button>
-  </div>
-</div>
-
-<!-- ── ACTIVITY 2 ── -->
-<div class="screen bg-2" id="s-a2">
-  <div class="act-hd">
-    <div class="act-badge">Activity 2 of 3</div>
-    <h2 class="act-title">🔵 Choose the Right One!</h2>
-    <p class="act-desc">Tap IN, ON or AT for each sentence</p>
-  </div>
-  <div class="rr">
-    <div class="rr-item rri-in"><div class="rr-word">IN</div><div class="rr-for">Months<br>Seasons · Years</div></div>
-    <div class="rr-item rri-on"><div class="rr-word">ON</div><div class="rr-for">Dates<br>Days of week</div></div>
-    <div class="rr-item rri-at"><div class="rr-word">AT</div><div class="rr-for">Times<br>Night · Noon</div></div>
-  </div>
-  <div class="q-cnt" id="a2-cnt">Question 1 of 12</div>
-  <div class="qc" id="a2-card">
-    <div class="q-sent" id="a2-sent"></div>
-    <div class="choices">
-      <button class="ch ch-in" id="a2-btn-in" onclick="ans2('IN')">IN</button>
-      <button class="ch ch-on" id="a2-btn-on" onclick="ans2('ON')">ON</button>
-      <button class="ch ch-at" id="a2-btn-at" onclick="ans2('AT')">AT</button>
-    </div>
-    <div class="fb" id="a2-fb"></div>
-    <button class="btn-nxt" id="a2-nxt" onclick="next2()">Next ➡️</button>
-  </div>
-</div>
-
-<!-- ── ACTIVITY 3 ── -->
-<div class="screen bg-3" id="s-a3">
-  <div class="act-hd">
-    <div class="act-badge">Activity 3 of 3</div>
-    <h2 class="act-title">✋ Sort the Words!</h2>
-    <p class="act-desc">Drag each word into the right basket!</p>
-  </div>
-  <div class="rr">
-    <div class="rr-item rri-in"><div class="rr-word">IN</div><div class="rr-for">Months<br>Seasons · Years</div></div>
-    <div class="rr-item rri-on"><div class="rr-word">ON</div><div class="rr-for">Dates<br>Days of week</div></div>
-    <div class="rr-item rri-at"><div class="rr-word">AT</div><div class="rr-for">Times<br>Night · Noon</div></div>
-  </div>
-  <div class="pool" id="pool"></div>
-  <div class="zones">
-    <div class="zone zone-in" id="zone-IN" data-type="IN">
-      <div class="z-head">IN</div>
-      <div class="z-lbl">Months<br>Seasons<br>Years</div>
-      <div class="z-words" id="zone-IN-w"></div>
-    </div>
-    <div class="zone zone-on" id="zone-ON" data-type="ON">
-      <div class="z-head">ON</div>
-      <div class="z-lbl">Days<br>Specific<br>Dates</div>
-      <div class="z-words" id="zone-ON-w"></div>
-    </div>
-    <div class="zone zone-at" id="zone-AT" data-type="AT">
-      <div class="z-head">AT</div>
-      <div class="z-lbl">Times<br>Night<br>Noon</div>
-      <div class="z-words" id="zone-AT-w"></div>
-    </div>
-  </div>
-  <div class="drag-info" id="drag-info">Drag the words above! ☝️</div>
-  <button class="btn-fin" id="btn-fin" onclick="finishDrag()">See My Score! 🌟</button>
-</div>
-
-<!-- ── RESULTS ── -->
-<div class="screen bg-r" id="s-results">
-  <div class="res-inner">
-    <div class="res-card">
-      <span class="res-trophy" id="res-trophy">🏆</span>
-      <div class="res-title" id="res-title">Amazing!</div>
-      <div class="res-sub">Well done, Summer! 🎉</div>
-      <div class="res-stars" id="res-stars">⭐⭐⭐⭐⭐</div>
-      <div class="res-score" id="res-score">36 / 36 Stars!</div>
-      <div class="res-msg" id="res-msg">You're an IN · ON · AT superstar!</div>
-      <button class="btn-again" onclick="restart()">Play Again! 🔄</button>
-    </div>
-  </div>
-</div>
-
-</div><!-- .main -->
-
-<div class="overlay" id="overlay">
-  <div class="ov-box">
-    <span class="ov-icon" id="ov-icon">🎉</span>
-    <div class="ov-title" id="ov-title">Activity Done!</div>
-    <div class="ov-score" id="ov-score"></div>
-    <button class="btn-ov" id="btn-ov">Keep Going! ➡️</button>
-  </div>
-</div>
+<div class="footer">Tap a subject to start learning! 🚀</div>
 
 <script>
 'use strict';
-
-/* ═══════════════ UTILS ═══════════════ */
-const shuffle = a => [...a].sort(() => Math.random() - .5);
-const pick = (a, n) => shuffle(a).slice(0, n);
-
-/* ═══════════════ BANKS ═══════════════ */
-
-// Bank 1 — fill in the blank
-const B1_IN = [
-  {b:'My birthday is',           a:'July.',            ans:'IN', h:'🗓️ July is a month — use IN with months!'},
-  {b:'My school has a holiday',  a:'October.',         ans:'IN', h:'🗓️ October is a month — use IN!'},
-  {b:'We come back home',        a:'November.',        ans:'IN', h:'🗓️ November is a month — use IN!'},
-  {b:'I was born',               a:'the morning.',     ans:'IN', h:'🌅 Morning is a time period — use IN!'},
-  {b:'The leaves fall',          a:'autumn.',          ans:'IN', h:'🍂 Autumn is a season — use IN!'},
-  {b:'Flowers bloom',            a:'spring.',          ans:'IN', h:'🌸 Spring is a season — use IN!'},
-  {b:'It is very hot',           a:'summer.',          ans:'IN', h:'☀️ Summer is a season — use IN!'},
-  {b:'I love reading',           a:'the evening.',     ans:'IN', h:'🌆 Evening is a time period — use IN!'},
-  {b:'We go swimming',           a:'July and August.', ans:'IN', h:'🗓️ July and August are months — use IN!'},
-  {b:'Children play outside',    a:'the afternoon.',   ans:'IN', h:'☕ Afternoon is a time period — use IN!'},
-  {b:'I started school',         a:'2020.',            ans:'IN', h:'📅 2020 is a year — use IN!'},
-  {b:'Grandma was born',         a:'December.',        ans:'IN', h:'🗓️ December is a month — use IN!'},
-  {b:'We go on a trip',          a:'March.',           ans:'IN', h:'🗓️ March is a month — use IN!'},
-  {b:'The rainy season starts',  a:'June.',            ans:'IN', h:'🗓️ June is a month — use IN!'},
-  {b:'I eat breakfast',          a:'the morning.',     ans:'IN', h:'🌅 Morning is a time period — use IN!'},
-  {b:'School holidays are',      a:'winter.',          ans:'IN', h:'❄️ Winter is a season — use IN!'},
-  {b:'I lived in Spain',         a:'the 1970s.',       ans:'IN', h:'📅 The 1970s is a decade — use IN!'},
-  {b:"Fathers' Day is",          a:'June.',            ans:'IN', h:'🗓️ June is a month — use IN!'},
-  {b:"Mothers' Day is",          a:'May.',             ans:'IN', h:'🗓️ May is a month — use IN!'},
-  {b:'He does not work',         a:'the evenings.',    ans:'IN', h:'🌆 The evenings is a time period — use IN!'},
-  {b:"Leonardo's birthday is",   a:'November.',        ans:'IN', h:'🗓️ November is a month — use IN!'},
-  {b:'I study my books',         a:'the evening.',     ans:'IN', h:'🌆 Evening is a time period — use IN!'},
-  {b:'The Olympic Games are held',a:'the summer.',     ans:'IN', h:'☀️ Summer is a season — use IN!'},
-];
-const B1_ON = [
-  {b:'I was born',               a:'July 15th.',        ans:'ON', h:'📌 July 15th is a specific date — use ON!'},
-  {b:'My birthday party will be',a:'Saturday.',         ans:'ON', h:'📋 Saturday is a day of the week — use ON!'},
-  {b:'',                         a:'weekends, I go to the park.', ans:'ON', h:'📋 Weekends are specific days — use ON!'},
-  {b:'The holiday starts',       a:'October 23rd.',     ans:'ON', h:'📌 October 23rd is a specific date — use ON!'},
-  {b:'We visit my grandparents', a:'Monday morning.',   ans:'ON', h:'📋 Monday is a day of the week — use ON!'},
-  {b:'School opens again',       a:'November 1st.',     ans:'ON', h:'📌 November 1st is a specific date — use ON!'},
-  {b:'I meet my friends',        a:'the first day of school!', ans:'ON', h:'📌 The first day is a specific day — use ON!'},
-  {b:'We have a class trip',     a:'Friday.',           ans:'ON', h:'📋 Friday is a day of the week — use ON!'},
-  {b:'Dad comes home early',     a:'Sundays.',          ans:'ON', h:'📋 Sunday is a day of the week — use ON!'},
-  {b:'The match is',             a:'March 5th.',        ans:'ON', h:'📌 March 5th is a specific date — use ON!'},
-  {b:'I exercise',               a:'Tuesday evenings.', ans:'ON', h:'📋 Tuesday is a day of the week — use ON!'},
-  {b:'Our holiday starts',       a:'April 12th.',       ans:'ON', h:'📌 April 12th is a specific date — use ON!'},
-  {b:'We play football',         a:'Wednesday afternoons.', ans:'ON', h:'📋 Wednesday is a day of the week — use ON!'},
-  {b:'The festival is',          a:'the last Saturday of April.', ans:'ON', h:'📋 Last Saturday is a specific day — use ON!'},
-  {b:'Mum has a day off',        a:'Thursday.',         ans:'ON', h:'📋 Thursday is a day of the week — use ON!'},
-  {b:'I will start my new job',  a:'Friday.',           ans:'ON', h:'📋 Friday is a day of the week — use ON!'},
-  {b:'Our appointment is',       a:'the 24th of January.', ans:'ON', h:'📌 The 24th of January is a specific date — use ON!'},
-  {b:'My wife gave me a present',a:'my birthday.',      ans:'ON', h:'🎂 My birthday is a specific day — use ON!'},
-  {b:'I visit my grandmother',   a:'Mondays.',          ans:'ON', h:'📋 Monday is a day of the week — use ON!'},
-  {b:"April Fools' Day is",      a:'April 1st.',        ans:'ON', h:"📌 April 1st is a specific date — use ON!"},
-  {b:'His birthday is',          a:'September 7th.',    ans:'ON', h:'📌 September 7th is a specific date — use ON!'},
-  {b:'What do you like doing',   a:'Fridays?',          ans:'ON', h:'📋 Fridays are days of the week — use ON!'},
-];
-const B1_AT = [
-  {b:'The school bell rings',    a:"8 o'clock.",  ans:'AT', h:"⏰ 8 o'clock is a specific time — use AT!"},
-  {b:'We eat lunch together',    a:'noon.',        ans:'AT', h:'⏰ Noon is a specific time point — use AT!'},
-  {b:'I go to bed',              a:'9 at night.',  ans:'AT', h:'🌙 Night is a specific time — use AT!'},
-  {b:'Dad picks me up',          a:'3 pm.',        ans:'AT', h:'⏰ 3 pm is a specific time — use AT!'},
-  {b:'Dinner is ready',          a:"7 o'clock.",   ans:'AT', h:"⏰ 7 o'clock is a specific time — use AT!"},
-  {b:'We wake up',               a:'sunrise.',     ans:'AT', h:'🌅 Sunrise is a specific time point — use AT!'},
-  {b:'The party starts',         a:'midnight.',    ans:'AT', h:'🌙 Midnight is a specific time point — use AT!'},
-  {b:'We watch fireworks',       a:'New Year.',    ans:'AT', h:'🎆 New Year is a holiday/event — use AT!'},
-  {b:'I eat a snack',            a:'lunchtime.',   ans:'AT', h:'⏰ Lunchtime is a specific time — use AT!'},
-  {b:'The store closes',         a:"10 o'clock.",  ans:'AT', h:"⏰ 10 o'clock is a specific time — use AT!"},
-  {b:'The baby was born',        a:'dawn.',        ans:'AT', h:'🌅 Dawn is a specific time point — use AT!'},
-  {b:'I practice piano',         a:'4 in the afternoon.', ans:'AT', h:'⏰ 4 in the afternoon is a specific time — use AT!'},
-  {b:'We eat turkey',            a:'Thanksgiving.', ans:'AT', h:'🦃 Thanksgiving is a holiday/event — use AT!'},
-  {b:'The countdown ends',       a:"midnight on New Year's.", ans:'AT', h:'🌙 Midnight is a specific time — use AT!'},
-  {b:'The market is busiest',    a:'lunchtime.',   ans:'AT', h:'⏰ Lunchtime is a specific time — use AT!'},
-  {b:"Let's meet",               a:"six o'clock.", ans:'AT', h:"⏰ Six o'clock is a specific time — use AT!"},
-  {b:'He goes to school',        a:'8:30.',         ans:'AT', h:'⏰ 8:30 is a specific time — use AT!'},
-  {b:'The doctor will see you',  a:"two o'clock.", ans:'AT', h:"⏰ Two o'clock is a specific time — use AT!"},
-  {b:'Do you dream',             a:'night?',        ans:'AT', h:'🌙 Night is a time point — use AT!'},
-  {b:'I love shopping',          a:'the weekend.',  ans:'AT', h:'🛍️ The weekend is a time point — use AT!'},
-  {b:'I sleep',                  a:'midnight.',     ans:'AT', h:'🌙 Midnight is a specific time — use AT!'},
-  {b:'I eat my breakfast',       a:'7:15.',         ans:'AT', h:'⏰ 7:15 is a specific time — use AT!'},
-  {b:'Harry works',              a:'night.',        ans:'AT', h:'🌙 Night is a time point — use AT!'},
-];
-
-// Bank 2 — multiple choice
-const B2_IN = [
-  {s:"My brother's birthday is ___ January.",          ans:'IN', h:'🗓️ January is a month — use IN!'},
-  {s:'The flowers look beautiful ___ the spring.',     ans:'IN', h:'🌸 Spring is a season — use IN!'},
-  {s:'I usually drink coffee ___ the afternoon.',      ans:'IN', h:'☕ The afternoon is a time period — use IN!'},
-  {s:'Humans first landed on the moon ___ 1969.',      ans:'IN', h:'🚀 1969 is a year — use IN!'},
-  {s:'Technology will change a lot ___ the 21st century.', ans:'IN', h:'🤖 The 21st century is a long period — use IN!'},
-  {s:'It snows a lot ___ January.',                    ans:'IN', h:'🗓️ January is a month — use IN!'},
-  {s:'Butterflies come out ___ spring.',               ans:'IN', h:'🦋 Spring is a season — use IN!'},
-  {s:'I started swimming lessons ___ 2022.',           ans:'IN', h:'📅 2022 is a year — use IN!'},
-  {s:'Mangoes are ripe ___ summer.',                   ans:'IN', h:'☀️ Summer is a season — use IN!'},
-  {s:'We go camping ___ August.',                      ans:'IN', h:'🗓️ August is a month — use IN!'},
-  {s:'Leaves turn orange ___ autumn.',                 ans:'IN', h:'🍂 Autumn is a season — use IN!'},
-  {s:'Grandma was born ___ December.',                 ans:'IN', h:'🗓️ December is a month — use IN!'},
-  {s:'Dad reads the newspaper ___ the morning.',       ans:'IN', h:'🌅 Morning is a time period — use IN!'},
-  {s:'I lived in Spain ___ the 1970s.',                ans:'IN', h:'📅 The 1970s is a decade — use IN!'},
-  {s:"He doesn't work ___ the evenings.",              ans:'IN', h:'🌆 The evenings is a time period — use IN!'},
-  {s:'Do the Olympic Games start ___ June?',           ans:'IN', h:'🗓️ June is a month — use IN!'},
-  {s:"Fathers' Day is ___ June.",                      ans:'IN', h:'🗓️ June is a month — use IN!'},
-  {s:"Leonardo's birthday is ___ November.",           ans:'IN', h:'🗓️ November is a month — use IN!'},
-  {s:"Halloween is ___ October.",                      ans:'IN', h:'🗓️ October is a month — use IN!'},
-  {s:"Mothers' Day is ___ May.",                       ans:'IN', h:'🗓️ May is a month — use IN!'},
-  {s:"My son was born ___ 2017.",                      ans:'IN', h:'📅 2017 is a year — use IN!'},
-];
-const B2_ON = [
-  {s:'We have a meeting ___ Monday morning.',          ans:'ON', h:'📋 Monday is a day of the week — use ON!'},
-  {s:'Our anniversary is ___ October 14th.',           ans:'ON', h:'💕 October 14th is a specific date — use ON!'},
-  {s:'The supermarket is very crowded ___ Fridays.',   ans:'ON', h:'🛒 Friday is a day of the week — use ON!'},
-  {s:'The match is ___ Saturday.',                     ans:'ON', h:'📋 Saturday is a day of the week — use ON!'},
-  {s:'We get presents ___ Christmas Day.',             ans:'ON', h:'📌 Christmas Day is a specific day — use ON!'},
-  {s:'School starts ___ September 1st.',               ans:'ON', h:'📌 September 1st is a specific date — use ON!'},
-  {s:'I was born ___ a Tuesday.',                      ans:'ON', h:'📋 Tuesday is a day of the week — use ON!'},
-  {s:'The field trip is ___ Wednesday.',               ans:'ON', h:'📋 Wednesday is a day of the week — use ON!'},
-  {s:"Dad's birthday is ___ April 3rd.",               ans:'ON', h:'📌 April 3rd is a specific date — use ON!'},
-  {s:'I always sleep late ___ Sundays.',               ans:'ON', h:'📋 Sunday is a day of the week — use ON!'},
-  {s:'The festival is ___ the last Saturday of June.', ans:'ON', h:'📋 Saturday is a day of the week — use ON!'},
-  {s:'We visit the zoo ___ Thursday.',                 ans:'ON', h:'📋 Thursday is a day of the week — use ON!'},
-  {s:'The parade happens ___ July 4th.',               ans:'ON', h:'📌 July 4th is a specific date — use ON!'},
-  {s:'I visit my grandmother ___ Mondays.',            ans:'ON', h:'📋 Monday is a day of the week — use ON!'},
-  {s:'The museum is closed ___ Mondays.',              ans:'ON', h:'📋 Monday is a day of the week — use ON!'},
-  {s:'He usually gets up late ___ Saturdays.',         ans:'ON', h:'📋 Saturday is a day of the week — use ON!'},
-  {s:'I never do homework ___ Friday afternoon.',      ans:'ON', h:'📋 Friday is a day of the week — use ON!'},
-  {s:"April Fools' Day is ___ April 1st.",             ans:'ON', h:"📌 April 1st is a specific date — use ON!"},
-  {s:"Dad always cooks ___ Mother's Day.",             ans:'ON', h:"📌 Mother's Day is a special day — use ON!"},
-  {s:'His birthday is ___ September 7th.',             ans:'ON', h:'📌 September 7th is a specific date — use ON!'},
-  {s:"My sister's birthday is ___ February 14th.",     ans:'ON', h:'📌 February 14th is a specific date — use ON!'},
-  {s:"Thanksgiving Day is ___ the fourth Thursday of November.", ans:'ON', h:'📋 Thursday is a day of the week — use ON!'},
-];
-const B2_AT = [
-  {s:"The class starts ___ 8 o'clock.",                ans:'AT', h:"⏰ 8 o'clock is a specific time — use AT!"},
-  {s:"We eat dinner ___ 7 o'clock.",                   ans:'AT', h:"⏰ 7 o'clock is a specific time — use AT!"},
-  {s:'I go to sleep ___ night.',                       ans:'AT', h:'🌙 Night is a time point — use AT!'},
-  {s:'We sing songs ___ Christmas.',                   ans:'AT', h:'🎄 Christmas is a holiday/event — use AT!'},
-  {s:'The meeting starts ___ noon.',                   ans:'AT', h:'⏰ Noon is a specific time — use AT!'},
-  {s:'Fireworks go off ___ midnight.',                 ans:'AT', h:'🌙 Midnight is a specific time — use AT!'},
-  {s:'School lunch is ___ midday.',                    ans:'AT', h:'⏰ Midday is a specific time — use AT!'},
-  {s:"The show starts ___ 6 o'clock.",                 ans:'AT', h:"⏰ 6 o'clock is a specific time — use AT!"},
-  {s:'We give gifts ___ Easter.',                      ans:'AT', h:'🐣 Easter is a holiday/event — use AT!'},
-  {s:'I eat breakfast ___ 7 am.',                      ans:'AT', h:'⏰ 7 am is a specific time — use AT!'},
-  {s:"Doors open ___ 9 o'clock.",                      ans:'AT', h:"⏰ 9 o'clock is a specific time — use AT!"},
-  {s:'Children trick-or-treat ___ Halloween.',         ans:'AT', h:'🎃 Halloween is a holiday/event — use AT!'},
-  {s:'The library closes ___ 8 pm.',                   ans:'AT', h:'⏰ 8 pm is a specific time — use AT!'},
-  {s:'She usually goes to bed ___ midnight.',           ans:'AT', h:'🌙 Midnight is a specific time — use AT!'},
-  {s:'Many people eat sweets ___ Halloween.',           ans:'AT', h:'🎃 Halloween is a holiday/event — use AT!'},
-  {s:'Here the shops shut ___ half past eight.',        ans:'AT', h:"⏰ Half past eight is a specific time — use AT!"},
-  {s:'I eat my breakfast ___ 7:15 every day.',          ans:'AT', h:'⏰ 7:15 is a specific time — use AT!'},
-  {s:'Bernardo gets up ___ 8:15.',                      ans:'AT', h:'⏰ 8:15 is a specific time — use AT!'},
-  {s:'We like riding our bikes ___ the weekend.',       ans:'AT', h:'🚴 The weekend is a time point — use AT!'},
-  {s:'I sleep ___ midnight.',                           ans:'AT', h:'🌙 Midnight is a specific time — use AT!'},
-  {s:'Harry works ___ night.',                          ans:'AT', h:'🌙 Night is a time point — use AT!'},
-  {s:'Linda finishes work ___ 5:45.',                   ans:'AT', h:'⏰ 5:45 is a specific time — use AT!'},
-  {s:"Let's meet ___ six o'clock.",                     ans:'AT', h:"⏰ Six o'clock is a specific time — use AT!"},
-];
-
-// Bank 3 — drag & drop words
-const B3_IN = [
-  {w:'JULY',        e:'☀️', ans:'IN'},
-  {w:'AUGUST',      e:'🏖️', ans:'IN'},
-  {w:'JANUARY',     e:'❄️', ans:'IN'},
-  {w:'spring',      e:'🌸', ans:'IN'},
-  {w:'winter',      e:'⛄', ans:'IN'},
-  {w:'summer',      e:'🏊', ans:'IN'},
-  {w:'autumn',      e:'🍂', ans:'IN'},
-  {w:'MARCH',       e:'🌦️', ans:'IN'},
-  {w:'DECEMBER',    e:'🎄', ans:'IN'},
-  {w:'the morning', e:'🌅', ans:'IN'},
-  {w:'the evening', e:'🌆', ans:'IN'},
-  {w:'OCTOBER',     e:'🎃', ans:'IN'},
-  {w:'the 1970s',   e:'📅', ans:'IN'},
-  {w:'FEBRUARY',    e:'💕', ans:'IN'},
-  {w:'JUNE',        e:'🌦️', ans:'IN'},
-  {w:'NOVEMBER',    e:'🍁', ans:'IN'},
-  {w:'the afternoon',e:'☕', ans:'IN'},
-  {w:'SEPTEMBER',   e:'🏫', ans:'IN'},
-  {w:'MAY',         e:'🌷', ans:'IN'},
-];
-const B3_ON = [
-  {w:'MONDAY',      e:'📋', ans:'ON'},
-  {w:'SUNDAY',      e:'😴', ans:'ON'},
-  {w:'SATURDAY',    e:'🎉', ans:'ON'},
-  {w:'Oct 31st',    e:'🎃', ans:'ON'},
-  {w:'Dec 25th',    e:'🎁', ans:'ON'},
-  {w:'FRIDAY',      e:'🎒', ans:'ON'},
-  {w:'WEDNESDAY',   e:'📚', ans:'ON'},
-  {w:'Apr 1st',     e:'😂', ans:'ON'},
-  {w:'THURSDAY',    e:'⚽', ans:'ON'},
-  {w:'Sep 1st',     e:'🏫', ans:'ON'},
-  {w:'Christmas Day',e:'🎁', ans:'ON'},
-  {w:"Mother's Day", e:'💐', ans:'ON'},
-  {w:'TUESDAY',     e:'📖', ans:'ON'},
-  {w:'Jul 4th',     e:'🎆', ans:'ON'},
-  {w:'Feb 14th',    e:'💕', ans:'ON'},
-];
-const B3_AT = [
-  {w:"3 o'clock",   e:'⏰', ans:'AT'},
-  {w:'midnight',    e:'🌙', ans:'AT'},
-  {w:'noon',        e:'🌞', ans:'AT'},
-  {w:'night',       e:'⭐', ans:'AT'},
-  {w:'sunrise',     e:'🌅', ans:'AT'},
-  {w:'Christmas',   e:'🎄', ans:'AT'},
-  {w:'New Year',    e:'🎆', ans:'AT'},
-  {w:'lunchtime',   e:'🍱', ans:'AT'},
-  {w:'Halloween',   e:'🎃', ans:'AT'},
-  {w:'Easter',      e:'🐣', ans:'AT'},
-  {w:'the moment',  e:'⚡', ans:'AT'},
-  {w:'half past 8', e:'⏰', ans:'AT'},
-  {w:'Thanksgiving',e:'🦃', ans:'AT'},
-  {w:'8:15',        e:'⏰', ans:'AT'},
-  {w:'the weekend', e:'🏖️', ans:'AT'},
-];
-
-/* ═══════════════ STATE ═══════════════ */
-const S = {stars:0, A1:[], A2:[], A3:[], a1i:0, a1s:0, a2i:0, a2s:0, a3s:0, a3placed:0};
-let nextActFn = null;
-
-/* ═══════════════ NAV ═══════════════ */
-function go(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-  const map={'s-welcome':0,'s-tutorial':8,'s-a1':8+S.a1i*2.7,'s-a2':42+S.a2i*2.7,'s-a3':78+S.a3placed*1.8,'s-results':100};
-  document.getElementById('hdrFill').style.width=Math.min(100,map[id]||0)+'%';
-}
-function updStars(){ document.getElementById('hdrStars').textContent='⭐ '+S.stars; }
-
-/* ═══════════════ TUTORIAL ═══════════════ */
-function pingRow(el){
-  el.style.background='rgba(255,255,255,.3)';
-  beep(660,.12);
-  setTimeout(()=>el.style.background='',300);
-}
-
-/* ═══════════════ ACTIVITY 1 ═══════════════ */
-function startA1(){ S.A1=shuffle([...pick(B1_IN,4),...pick(B1_ON,4),...pick(B1_AT,4)]); S.a1i=0; S.a1s=0; renderA1(); go('s-a1'); }
-
-function renderA1(){
-  const q=S.A1[S.a1i];
-  document.getElementById('a1-cnt').textContent=`Question ${S.a1i+1} of ${S.A1.length}`;
-  const bl='<span class="q-blank" id="blank1">___</span>';
-  document.getElementById('a1-sent').innerHTML = q.b ? `${q.b} ${bl} ${q.a}` : `${bl} ${q.a}`;
-  ['a1-btn-in','a1-btn-on','a1-btn-at'].forEach(id=>{
-    const b=document.getElementById(id); b.disabled=false;
-    b.className=id.includes('in')?'ch ch-in':id.includes('on')?'ch ch-on':'ch ch-at';
+const emojis = ['⭐','🌟','✨','💫','🎉'];
+document.querySelectorAll('.card.available').forEach(card=>{
+  card.addEventListener('click', e=>{
+    const r = card.getBoundingClientRect();
+    for(let i=0;i<5;i++){
+      const s=document.createElement('div');
+      s.className='sparkle';
+      s.textContent=emojis[i];
+      s.style.left=(r.left+r.width/2-10+( Math.random()*60-30))+'px';
+      s.style.top=(r.top+r.height/2)+'px';
+      document.body.appendChild(s);
+      setTimeout(()=>s.remove(),1300);
+    }
   });
-  const fb=document.getElementById('a1-fb'); fb.className='fb'; fb.textContent='';
-  document.getElementById('a1-nxt').classList.remove('show');
-  document.getElementById('a1-card').classList.remove('shake');
-  go('s-a1');
-}
-
-function ans1(choice){
-  const q=S.A1[S.a1i], ok=choice===q.ans;
-  const bl=document.getElementById('blank1');
-  bl.textContent=choice; bl.className='q-blank '+(ok?'correct':'wrong');
-  const fb=document.getElementById('a1-fb');
-  fb.textContent=ok?`✅ Correct! ${q.h}`:`❌ The answer is "${q.ans}". ${q.h}`;
-  fb.className='fb '+(ok?'ok':'no');
-  ['a1-btn-in','a1-btn-on','a1-btn-at'].forEach(id=>{
-    const b=document.getElementById(id); b.disabled=true;
-    if(b.textContent.trim()===choice) b.classList.add(ok?'sel-ok':'sel-no');
-  });
-  if(ok){ S.a1s++; S.stars++; updStars(); burst(); beep(880,.1,1100,.15); }
-  else { document.getElementById('a1-card').classList.add('shake'); beep(220,.3); }
-  document.getElementById('a1-nxt').classList.add('show');
-}
-
-function next1(){
-  S.a1i++;
-  if(S.a1i<S.A1.length){ renderA1(); }
-  else showOverlay(S.a1s,S.A1.length,()=>startA2());
-}
-
-/* ═══════════════ ACTIVITY 2 ═══════════════ */
-function startA2(){ S.A2=shuffle([...pick(B2_IN,4),...pick(B2_ON,4),...pick(B2_AT,4)]); S.a2i=0; S.a2s=0; renderA2(); go('s-a2'); }
-
-function renderA2(){
-  const q=S.A2[S.a2i];
-  document.getElementById('a2-cnt').textContent=`Question ${S.a2i+1} of ${S.A2.length}`;
-  document.getElementById('a2-sent').innerHTML=q.s.replace('___','<span class="q-blank" id="blank2">___</span>');
-  ['a2-btn-in','a2-btn-on','a2-btn-at'].forEach(id=>{
-    const b=document.getElementById(id); b.disabled=false;
-    b.className=id.includes('in')?'ch ch-in':id.includes('on')?'ch ch-on':'ch ch-at';
-  });
-  const fb=document.getElementById('a2-fb'); fb.className='fb'; fb.textContent='';
-  document.getElementById('a2-nxt').classList.remove('show');
-  document.getElementById('a2-card').classList.remove('shake');
-  go('s-a2');
-}
-
-function ans2(choice){
-  const q=S.A2[S.a2i], ok=choice===q.ans;
-  const bl=document.getElementById('blank2');
-  bl.textContent=choice; bl.className='q-blank '+(ok?'correct':'wrong');
-  const fb=document.getElementById('a2-fb');
-  fb.textContent=ok?`✅ Correct! ${q.h}`:`❌ The answer is "${q.ans}". ${q.h}`;
-  fb.className='fb '+(ok?'ok':'no');
-  ['a2-btn-in','a2-btn-on','a2-btn-at'].forEach(id=>{
-    const b=document.getElementById(id); b.disabled=true;
-    if(b.textContent.trim()===choice) b.classList.add(ok?'sel-ok':'sel-no');
-  });
-  if(ok){ S.a2s++; S.stars++; updStars(); burst(); beep(880,.1,1100,.15); }
-  else { document.getElementById('a2-card').classList.add('shake'); beep(220,.3); }
-  document.getElementById('a2-nxt').classList.add('show');
-}
-
-function next2(){
-  S.a2i++;
-  if(S.a2i<S.A2.length){ renderA2(); }
-  else showOverlay(S.a2s,S.A2.length,()=>startA3());
-}
-
-/* ═══════════════ ACTIVITY 3 — DRAG & DROP ═══════════════ */
-function startA3(){
-  S.A3=shuffle([...pick(B3_IN,4),...pick(B3_ON,4),...pick(B3_AT,4)]);
-  S.a3s=0; S.a3placed=0;
-  buildPool();
-  ['IN','ON','AT'].forEach(t=>{
-    document.getElementById('zone-'+t+'-w').innerHTML='';
-  });
-  document.getElementById('drag-info').textContent='Drag the words above! ☝️';
-  document.getElementById('btn-fin').classList.remove('show');
-  go('s-a3');
-}
-
-function buildPool(){
-  const pool=document.getElementById('pool'); pool.innerHTML='';
-  S.A3.forEach((item,idx)=>{
-    const chip=document.createElement('div');
-    chip.className='chip'; chip.dataset.idx=idx; chip.dataset.ans=item.ans;
-    chip.innerHTML=`<span>${item.e}</span>${item.w}`;
-    initDrag(chip); pool.appendChild(chip);
-  });
-}
-
-let drag=null;
-function initDrag(chip){
-  chip.addEventListener('touchstart',e=>{e.preventDefault();startDrag(chip,e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
-  chip.addEventListener('mousedown', e=>{e.preventDefault();startDrag(chip,e.clientX,e.clientY);});
-}
-
-function startDrag(chip,cx,cy){
-  if(chip.classList.contains('chip-placed')) return;
-  const r=chip.getBoundingClientRect();
-  const clone=document.createElement('div');
-  clone.className='drag-clone'; clone.innerHTML=chip.innerHTML;
-  clone.style.left=r.left+'px'; clone.style.top=r.top+'px'; clone.style.width=r.width+'px';
-  document.body.appendChild(clone);
-  chip.classList.add('dragging-src');
-  drag={chip,clone,ox:cx-r.left,oy:cy-r.top};
-
-  const onTM=e=>{e.preventDefault();moveDrag(e.touches[0].clientX,e.touches[0].clientY);};
-  const onTE=e=>{e.preventDefault();endDrag(e.changedTouches[0].clientX,e.changedTouches[0].clientY);document.removeEventListener('touchmove',onTM);document.removeEventListener('touchend',onTE);};
-  const onMM=e=>moveDrag(e.clientX,e.clientY);
-  const onMU=e=>{endDrag(e.clientX,e.clientY);document.removeEventListener('mousemove',onMM);document.removeEventListener('mouseup',onMU);};
-  document.addEventListener('touchmove',onTM,{passive:false});
-  document.addEventListener('touchend',onTE,{passive:false});
-  document.addEventListener('mousemove',onMM);
-  document.addEventListener('mouseup',onMU);
-}
-
-function moveDrag(cx,cy){
-  if(!drag) return;
-  drag.clone.style.left=(cx-drag.ox)+'px'; drag.clone.style.top=(cy-drag.oy)+'px';
-  document.querySelectorAll('.zone').forEach(z=>z.classList.remove('over'));
-  document.elementFromPoint(cx,cy)?.closest('.zone')?.classList.add('over');
-}
-
-function endDrag(cx,cy){
-  if(!drag) return;
-  const {chip,clone}=drag; drag=null;
-  clone.remove(); chip.classList.remove('dragging-src');
-  document.querySelectorAll('.zone').forEach(z=>z.classList.remove('over'));
-  const zone=document.elementFromPoint(cx,cy)?.closest('.zone');
-  if(!zone) return;
-  const ok=zone.dataset.type===chip.dataset.ans;
-  const dchip=document.createElement('div');
-  dchip.className='dchip '+(ok?'dc-ok':'dc-no');
-  dchip.innerHTML=chip.innerHTML;
-  zone.querySelector('.z-words').appendChild(dchip);
-  chip.classList.add('chip-placed');
-  if(ok){ S.a3s++; S.stars++; updStars(); burst(); beep(880,.1,1100,.15); }
-  else beep(220,.3);
-  S.a3placed++;
-  const left=S.A3.length-S.a3placed;
-  document.getElementById('drag-info').textContent=left>0?`${left} word${left>1?'s':''} left! 💪`:'All done! 🌟';
-  if(S.a3placed===S.A3.length) document.getElementById('btn-fin').classList.add('show');
-}
-
-function finishDrag(){ showOverlay(S.a3s,S.A3.length,showResults); }
-
-/* ═══════════════ OVERLAY ═══════════════ */
-function showOverlay(score,total,onNext){
-  const p=score/total;
-  const icon=p===1?'🌟':p>=.7?'🎉':p>=.5?'👍':'💪';
-  const title=p===1?'Perfect Score!':p>=.7?'Great Job!':p>=.5?'Good Try!':'Keep Going!';
-  document.getElementById('ov-icon').textContent=icon;
-  document.getElementById('ov-title').textContent=title;
-  document.getElementById('ov-score').textContent=`You got ${score} out of ${total} correct! ⭐`;
-  nextActFn=onNext;
-  document.getElementById('overlay').classList.add('show');
-  document.getElementById('btn-ov').onclick=()=>{document.getElementById('overlay').classList.remove('show');nextActFn&&nextActFn();};
-  if(p>=.7) confetti();
-}
-
-/* ═══════════════ RESULTS ═══════════════ */
-function showResults(){
-  const total=S.A1.length+S.A2.length+S.A3.length;
-  const p=S.stars/total;
-  const [trophy,title,msg]=p>=.93?['🏆','SUPERSTAR!','You\'re an IN · ON · AT champion! 🌟']:
-    p>=.77?['🥇','Excellent!','Fantastic work — almost perfect!']:
-    p>=.6?['🥈','Well Done!','Great job! Keep practicing!']:
-    ['🌱','Keep Going!','You can do it! Try again!'];
-  document.getElementById('res-trophy').textContent=trophy;
-  document.getElementById('res-title').textContent=title;
-  document.getElementById('res-stars').textContent='⭐'.repeat(Math.round(p*5));
-  document.getElementById('res-score').textContent=`${S.stars} / ${total} Stars!`;
-  document.getElementById('res-msg').textContent=msg;
-  go('s-results'); confetti();
-}
-
-function restart(){
-  Object.assign(S,{stars:0,A1:[],A2:[],A3:[],a1i:0,a1s:0,a2i:0,a2s:0,a3s:0,a3placed:0});
-  updStars(); go('s-welcome');
-}
-
-/* ═══════════════ FX ═══════════════ */
-function burst(){
-  const cx=window.innerWidth/2,cy=window.innerHeight/2;
-  const cols=['#FFE66D','#FF6B6B','#4ECDC4','#A8E6CF','#FF9500','#cf9ff5'];
-  for(let i=0;i<10;i++){
-    const a=(i/10)*360,d=60+Math.random()*50;
-    const tx=Math.cos(a*Math.PI/180)*d,ty=Math.sin(a*Math.PI/180)*d;
-    const p=document.createElement('div');
-    p.className='particle';
-    p.style.cssText=`left:${cx}px;top:${cy}px;width:12px;height:12px;background:${cols[i%6]};--tx:${tx}px;--ty:${ty}px;--dur:.6s;`;
-    document.body.appendChild(p); setTimeout(()=>p.remove(),700);
-  }
-  const star=document.createElement('div');
-  star.className='particle'; star.textContent='⭐';
-  star.style.cssText=`left:${cx-18}px;top:${cy-18}px;font-size:34px;background:transparent;--tx:0px;--ty:-90px;--dur:.8s;`;
-  document.body.appendChild(star); setTimeout(()=>star.remove(),900);
-}
-
-function confetti(){
-  const cols=['#FFE66D','#FF6B6B','#4ECDC4','#A8E6CF','#FF9500','#cf9ff5','#fff'];
-  for(let i=0;i<60;i++) setTimeout(()=>{
-    const p=document.createElement('div'); p.className='confetti-p';
-    const s=7+Math.random()*8;
-    p.style.cssText=`left:${Math.random()*100}vw;top:-30px;width:${s}px;height:${s}px;background:${cols[~~(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'3px'};--dur:${1.2+Math.random()*1.3}s;--delay:${Math.random()*.4}s;`;
-    document.body.appendChild(p); setTimeout(()=>p.remove(),3000);
-  },i*25);
-}
-
-let aCtx=null;
-function beep(f1,d1,f2,d2){
-  try{
-    if(!aCtx) aCtx=new(window.AudioContext||window.webkitAudioContext)();
-    const play=(f,d,w)=>{const o=aCtx.createOscillator(),g=aCtx.createGain();o.connect(g);g.connect(aCtx.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.12,aCtx.currentTime+w);g.gain.exponentialRampToValueAtTime(.001,aCtx.currentTime+w+d);o.start(aCtx.currentTime+w);o.stop(aCtx.currentTime+w+d+.01);};
-    play(f1,d1,0); if(f2) play(f2,d2,d1+.02);
-  }catch(e){}
-}
+});
 </script>
 </body>
 </html>
