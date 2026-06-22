@@ -200,7 +200,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#1a1a2e;user-select:
     </div>
     <p class="wc-name">Hi Summer! Let's play! 🎈</p>
     <button class="btn-start" onclick="go('s-tutorial')">Let's Go! 🚀</button>
-    <p class="wc-info">3 fun activities · Earn ⭐ stars!</p>
+    <p class="wc-info">3 activities · New questions every round! 🎲</p>
   </div>
 </div>
 
@@ -395,58 +395,155 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#1a1a2e;user-select:
 <script>
 'use strict';
 
-/* ═══════════════ DATA ═══════════════ */
+/* ═══════════════ UTILS ═══════════════ */
+const shuffle = a => [...a].sort(() => Math.random() - .5);
+const pick = (a, n) => shuffle(a).slice(0, n);
 
-// Activity 1 — fill in the blank (12 Qs: original 10 + 2 AT)
-const A1 = [
-  {b:'My birthday is',            a:'July.',                    ans:'IN',  h:'🗓️ July is a month — use IN with months!'},
-  {b:'I was born',                a:'July 15th.',               ans:'ON',  h:'📌 July 15th is a specific date — use ON!'},
-  {b:'My birthday party will be', a:'Saturday.',                ans:'ON',  h:'📋 Saturday is a day of the week — use ON!'},
-  {b:'',                          a:'weekends, I go to the park.',ans:'ON',h:'📋 Weekends are specific days — use ON!'},
-  {b:'My school has a holiday',   a:'October.',                 ans:'IN',  h:'🗓️ October is a month — use IN!'},
-  {b:'The holiday starts',        a:'October 23rd.',            ans:'ON',  h:'📌 October 23rd is a specific date — use ON!'},
-  {b:'We visit my grandparents',  a:'Monday morning.',          ans:'ON',  h:'📋 Monday is a day of the week — use ON!'},
-  {b:'We come back home',         a:'November.',                ans:'IN',  h:'🗓️ November is a month — use IN!'},
-  {b:'School opens again',        a:'November 1st.',            ans:'ON',  h:'📌 November 1st is a specific date — use ON!'},
-  {b:'I meet my friends',         a:'the first day of school!', ans:'ON',  h:'📌 The first day is a specific day — use ON!'},
-  {b:'The school bell rings',     a:"8 o'clock.",               ans:'AT',  h:"⏰ 8 o'clock is a specific time — use AT!"},
-  {b:'We eat lunch together',     a:'noon.',                    ans:'AT',  h:'⏰ Noon is a specific time point — use AT!'},
+/* ═══════════════ BANKS ═══════════════ */
+
+// Bank 1 — fill in the blank
+const B1_IN = [
+  {b:'My birthday is',           a:'July.',            ans:'IN', h:'🗓️ July is a month — use IN with months!'},
+  {b:'My school has a holiday',  a:'October.',         ans:'IN', h:'🗓️ October is a month — use IN!'},
+  {b:'We come back home',        a:'November.',        ans:'IN', h:'🗓️ November is a month — use IN!'},
+  {b:'I was born',               a:'the morning.',     ans:'IN', h:'🌅 Morning is a time period — use IN!'},
+  {b:'The leaves fall',          a:'autumn.',          ans:'IN', h:'🍂 Autumn is a season — use IN!'},
+  {b:'Flowers bloom',            a:'spring.',          ans:'IN', h:'🌸 Spring is a season — use IN!'},
+  {b:'It is very hot',           a:'summer.',          ans:'IN', h:'☀️ Summer is a season — use IN!'},
+  {b:'I love reading',           a:'the evening.',     ans:'IN', h:'🌆 Evening is a time period — use IN!'},
+  {b:'We go swimming',           a:'July and August.', ans:'IN', h:'🗓️ July and August are months — use IN!'},
+  {b:'Children play outside',    a:'the afternoon.',   ans:'IN', h:'☕ Afternoon is a time period — use IN!'},
+  {b:'I started school',         a:'2020.',            ans:'IN', h:'📅 2020 is a year — use IN!'},
+  {b:'Grandma was born',         a:'December.',        ans:'IN', h:'🗓️ December is a month — use IN!'},
+  {b:'We go on a trip',          a:'March.',           ans:'IN', h:'🗓️ March is a month — use IN!'},
+  {b:'The rainy season starts',  a:'June.',            ans:'IN', h:'🗓️ June is a month — use IN!'},
+  {b:'I eat breakfast',          a:'the morning.',     ans:'IN', h:'🌅 Morning is a time period — use IN!'},
+  {b:'School holidays are',      a:'winter.',          ans:'IN', h:'❄️ Winter is a season — use IN!'},
+];
+const B1_ON = [
+  {b:'I was born',               a:'July 15th.',        ans:'ON', h:'📌 July 15th is a specific date — use ON!'},
+  {b:'My birthday party will be',a:'Saturday.',         ans:'ON', h:'📋 Saturday is a day of the week — use ON!'},
+  {b:'',                         a:'weekends, I go to the park.', ans:'ON', h:'📋 Weekends are specific days — use ON!'},
+  {b:'The holiday starts',       a:'October 23rd.',     ans:'ON', h:'📌 October 23rd is a specific date — use ON!'},
+  {b:'We visit my grandparents', a:'Monday morning.',   ans:'ON', h:'📋 Monday is a day of the week — use ON!'},
+  {b:'School opens again',       a:'November 1st.',     ans:'ON', h:'📌 November 1st is a specific date — use ON!'},
+  {b:'I meet my friends',        a:'the first day of school!', ans:'ON', h:'📌 The first day is a specific day — use ON!'},
+  {b:'We have a class trip',     a:'Friday.',           ans:'ON', h:'📋 Friday is a day of the week — use ON!'},
+  {b:'Dad comes home early',     a:'Sundays.',          ans:'ON', h:'📋 Sunday is a day of the week — use ON!'},
+  {b:'The match is',             a:'March 5th.',        ans:'ON', h:'📌 March 5th is a specific date — use ON!'},
+  {b:'I exercise',               a:'Tuesday evenings.', ans:'ON', h:'📋 Tuesday is a day of the week — use ON!'},
+  {b:'Our holiday starts',       a:'April 12th.',       ans:'ON', h:'📌 April 12th is a specific date — use ON!'},
+  {b:'We play football',         a:'Wednesday afternoons.', ans:'ON', h:'📋 Wednesday is a day of the week — use ON!'},
+  {b:'The festival is',          a:'the last Saturday of April.', ans:'ON', h:'📋 Last Saturday is a specific day — use ON!'},
+  {b:'Mum has a day off',        a:'Thursday.',         ans:'ON', h:'📋 Thursday is a day of the week — use ON!'},
+];
+const B1_AT = [
+  {b:'The school bell rings',    a:"8 o'clock.",  ans:'AT', h:"⏰ 8 o'clock is a specific time — use AT!"},
+  {b:'We eat lunch together',    a:'noon.',        ans:'AT', h:'⏰ Noon is a specific time point — use AT!'},
+  {b:'I go to bed',              a:'9 at night.',  ans:'AT', h:'🌙 Night is a specific time — use AT!'},
+  {b:'Dad picks me up',          a:'3 pm.',        ans:'AT', h:'⏰ 3 pm is a specific time — use AT!'},
+  {b:'Dinner is ready',          a:"7 o'clock.",   ans:'AT', h:"⏰ 7 o'clock is a specific time — use AT!"},
+  {b:'We wake up',               a:'sunrise.',     ans:'AT', h:'🌅 Sunrise is a specific time point — use AT!'},
+  {b:'The party starts',         a:'midnight.',    ans:'AT', h:'🌙 Midnight is a specific time point — use AT!'},
+  {b:'We watch fireworks',       a:'New Year.',    ans:'AT', h:'🎆 New Year is a holiday/event — use AT!'},
+  {b:'I eat a snack',            a:'lunchtime.',   ans:'AT', h:'⏰ Lunchtime is a specific time — use AT!'},
+  {b:'The store closes',         a:"10 o'clock.",  ans:'AT', h:"⏰ 10 o'clock is a specific time — use AT!"},
+  {b:'The baby was born',        a:'dawn.',        ans:'AT', h:'🌅 Dawn is a specific time point — use AT!'},
+  {b:'I practice piano',         a:'4 in the afternoon.', ans:'AT', h:'⏰ 4 in the afternoon is a specific time — use AT!'},
+  {b:'We eat turkey',            a:'Thanksgiving.', ans:'AT', h:'🦃 Thanksgiving is a holiday/event — use AT!'},
+  {b:'The countdown ends',       a:"midnight on New Year's.", ans:'AT', h:'🌙 Midnight is a specific time — use AT!'},
+  {b:'The market is busiest',    a:'lunchtime.',   ans:'AT', h:'⏰ Lunchtime is a specific time — use AT!'},
 ];
 
-// Activity 2 — multiple choice (12 Qs including AT)
-const A2 = [
-  {s:'We have a meeting ___ Monday morning.',           ans:'ON',  h:'📋 Monday is a day of the week — use ON!'},
-  {s:"My brother's birthday is ___ January.",           ans:'IN',  h:'🗓️ January is a month — use IN!'},
-  {s:'The flowers look beautiful ___ the spring.',      ans:'IN',  h:'🌸 Spring is a season — use IN!'},
-  {s:"The class starts ___ 8 o'clock.",                 ans:'AT',  h:"⏰ 8 o'clock is a specific time — use AT!"},
-  {s:'I usually drink coffee ___ the afternoon.',       ans:'IN',  h:'☕ The afternoon is a time period — use IN!'},
-  {s:'Humans first landed on the moon ___ 1969.',       ans:'IN',  h:'🚀 1969 is a year — use IN!'},
-  {s:'Our anniversary is ___ October 14th.',            ans:'ON',  h:'💕 October 14th is a specific date — use ON!'},
-  {s:'The supermarket is very crowded ___ Fridays.',    ans:'ON',  h:'🛒 Friday is a day of the week — use ON!'},
-  {s:"We eat dinner ___ 7 o'clock.",                    ans:'AT',  h:"⏰ 7 o'clock is a specific time — use AT!"},
-  {s:'I go to sleep ___ night.',                        ans:'AT',  h:'🌙 Night is a time point — use AT!'},
-  {s:'We sing songs ___ Christmas.',                    ans:'AT',  h:'🎄 Christmas is a holiday/event — use AT!'},
-  {s:'Technology will change a lot ___ the 21st century.',ans:'IN',h:'🤖 The 21st century is a long period — use IN!'},
+// Bank 2 — multiple choice
+const B2_IN = [
+  {s:"My brother's birthday is ___ January.",          ans:'IN', h:'🗓️ January is a month — use IN!'},
+  {s:'The flowers look beautiful ___ the spring.',     ans:'IN', h:'🌸 Spring is a season — use IN!'},
+  {s:'I usually drink coffee ___ the afternoon.',      ans:'IN', h:'☕ The afternoon is a time period — use IN!'},
+  {s:'Humans first landed on the moon ___ 1969.',      ans:'IN', h:'🚀 1969 is a year — use IN!'},
+  {s:'Technology will change a lot ___ the 21st century.', ans:'IN', h:'🤖 The 21st century is a long period — use IN!'},
+  {s:'It snows a lot ___ January.',                    ans:'IN', h:'🗓️ January is a month — use IN!'},
+  {s:'Butterflies come out ___ spring.',               ans:'IN', h:'🦋 Spring is a season — use IN!'},
+  {s:'I started swimming lessons ___ 2022.',           ans:'IN', h:'📅 2022 is a year — use IN!'},
+  {s:'Mangoes are ripe ___ summer.',                   ans:'IN', h:'☀️ Summer is a season — use IN!'},
+  {s:'We go camping ___ August.',                      ans:'IN', h:'🗓️ August is a month — use IN!'},
+  {s:'Leaves turn orange ___ autumn.',                 ans:'IN', h:'🍂 Autumn is a season — use IN!'},
+  {s:'Grandma was born ___ December.',                 ans:'IN', h:'🗓️ December is a month — use IN!'},
+  {s:'Dad reads the newspaper ___ the morning.',       ans:'IN', h:'🌅 Morning is a time period — use IN!'},
+];
+const B2_ON = [
+  {s:'We have a meeting ___ Monday morning.',          ans:'ON', h:'📋 Monday is a day of the week — use ON!'},
+  {s:'Our anniversary is ___ October 14th.',           ans:'ON', h:'💕 October 14th is a specific date — use ON!'},
+  {s:'The supermarket is very crowded ___ Fridays.',   ans:'ON', h:'🛒 Friday is a day of the week — use ON!'},
+  {s:'The match is ___ Saturday.',                     ans:'ON', h:'📋 Saturday is a day of the week — use ON!'},
+  {s:'We get presents ___ Christmas Day.',             ans:'ON', h:'📌 Christmas Day is a specific day — use ON!'},
+  {s:'School starts ___ September 1st.',               ans:'ON', h:'📌 September 1st is a specific date — use ON!'},
+  {s:'I was born ___ a Tuesday.',                      ans:'ON', h:'📋 Tuesday is a day of the week — use ON!'},
+  {s:'The field trip is ___ Wednesday.',               ans:'ON', h:'📋 Wednesday is a day of the week — use ON!'},
+  {s:"Dad's birthday is ___ April 3rd.",               ans:'ON', h:'📌 April 3rd is a specific date — use ON!'},
+  {s:'I always sleep late ___ Sundays.',               ans:'ON', h:'📋 Sunday is a day of the week — use ON!'},
+  {s:'The festival is ___ the last Saturday of June.', ans:'ON', h:'📋 Saturday is a day of the week — use ON!'},
+  {s:'We visit the zoo ___ Thursday.',                 ans:'ON', h:'📋 Thursday is a day of the week — use ON!'},
+  {s:'The parade happens ___ July 4th.',               ans:'ON', h:'📌 July 4th is a specific date — use ON!'},
+];
+const B2_AT = [
+  {s:"The class starts ___ 8 o'clock.",                ans:'AT', h:"⏰ 8 o'clock is a specific time — use AT!"},
+  {s:"We eat dinner ___ 7 o'clock.",                   ans:'AT', h:"⏰ 7 o'clock is a specific time — use AT!"},
+  {s:'I go to sleep ___ night.',                       ans:'AT', h:'🌙 Night is a time point — use AT!'},
+  {s:'We sing songs ___ Christmas.',                   ans:'AT', h:'🎄 Christmas is a holiday/event — use AT!'},
+  {s:'The meeting starts ___ noon.',                   ans:'AT', h:'⏰ Noon is a specific time — use AT!'},
+  {s:'Fireworks go off ___ midnight.',                 ans:'AT', h:'🌙 Midnight is a specific time — use AT!'},
+  {s:'School lunch is ___ midday.',                    ans:'AT', h:'⏰ Midday is a specific time — use AT!'},
+  {s:"The show starts ___ 6 o'clock.",                 ans:'AT', h:"⏰ 6 o'clock is a specific time — use AT!"},
+  {s:'We give gifts ___ Easter.',                      ans:'AT', h:'🐣 Easter is a holiday/event — use AT!'},
+  {s:'I eat breakfast ___ 7 am.',                      ans:'AT', h:'⏰ 7 am is a specific time — use AT!'},
+  {s:"Doors open ___ 9 o'clock.",                      ans:'AT', h:"⏰ 9 o'clock is a specific time — use AT!"},
+  {s:'Children trick-or-treat ___ Halloween.',         ans:'AT', h:'🎃 Halloween is a holiday/event — use AT!'},
+  {s:'The library closes ___ 8 pm.',                   ans:'AT', h:'⏰ 8 pm is a specific time — use AT!'},
 ];
 
-// Activity 3 — drag & drop (12 words: 4 IN, 4 ON, 4 AT)
-const A3 = [
-  {w:'JULY',       e:'☀️', ans:'IN'},
-  {w:'MONDAY',     e:'📋', ans:'ON'},
-  {w:"3 o'clock",  e:'⏰', ans:'AT'},
-  {w:'AUGUST',     e:'🏖️', ans:'IN'},
-  {w:'SUNDAY',     e:'😴', ans:'ON'},
-  {w:'midnight',   e:'🌙', ans:'AT'},
-  {w:'the summer', e:'🏊', ans:'IN'},
-  {w:'Oct 31st',   e:'🎃', ans:'ON'},
-  {w:'noon',       e:'🌞', ans:'AT'},
-  {w:'JANUARY',    e:'❄️', ans:'IN'},
-  {w:'SATURDAY',   e:'🎉', ans:'ON'},
-  {w:'night',      e:'⭐', ans:'AT'},
+// Bank 3 — drag & drop words
+const B3_IN = [
+  {w:'JULY',        e:'☀️', ans:'IN'},
+  {w:'AUGUST',      e:'🏖️', ans:'IN'},
+  {w:'JANUARY',     e:'❄️', ans:'IN'},
+  {w:'spring',      e:'🌸', ans:'IN'},
+  {w:'winter',      e:'⛄', ans:'IN'},
+  {w:'summer',      e:'🏊', ans:'IN'},
+  {w:'autumn',      e:'🍂', ans:'IN'},
+  {w:'MARCH',       e:'🌦️', ans:'IN'},
+  {w:'DECEMBER',    e:'🎄', ans:'IN'},
+  {w:'the morning', e:'🌅', ans:'IN'},
+  {w:'the evening', e:'🌆', ans:'IN'},
+  {w:'OCTOBER',     e:'🎃', ans:'IN'},
+];
+const B3_ON = [
+  {w:'MONDAY',      e:'📋', ans:'ON'},
+  {w:'SUNDAY',      e:'😴', ans:'ON'},
+  {w:'SATURDAY',    e:'🎉', ans:'ON'},
+  {w:'Oct 31st',    e:'🎃', ans:'ON'},
+  {w:'Dec 25th',    e:'🎁', ans:'ON'},
+  {w:'FRIDAY',      e:'🎒', ans:'ON'},
+  {w:'WEDNESDAY',   e:'📚', ans:'ON'},
+  {w:'Apr 1st',     e:'😂', ans:'ON'},
+  {w:'THURSDAY',    e:'⚽', ans:'ON'},
+  {w:'Sep 1st',     e:'🏫', ans:'ON'},
+];
+const B3_AT = [
+  {w:"3 o'clock",   e:'⏰', ans:'AT'},
+  {w:'midnight',    e:'🌙', ans:'AT'},
+  {w:'noon',        e:'🌞', ans:'AT'},
+  {w:'night',       e:'⭐', ans:'AT'},
+  {w:'sunrise',     e:'🌅', ans:'AT'},
+  {w:'Christmas',   e:'🎄', ans:'AT'},
+  {w:'New Year',    e:'🎆', ans:'AT'},
+  {w:'lunchtime',   e:'🍱', ans:'AT'},
+  {w:'Halloween',   e:'🎃', ans:'AT'},
+  {w:'Easter',      e:'🐣', ans:'AT'},
 ];
 
 /* ═══════════════ STATE ═══════════════ */
-const S = {stars:0, a1i:0, a1s:0, a2i:0, a2s:0, a3s:0, a3placed:0};
+const S = {stars:0, A1:[], A2:[], A3:[], a1i:0, a1s:0, a2i:0, a2s:0, a3s:0, a3placed:0};
 let nextActFn = null;
 
 /* ═══════════════ NAV ═══════════════ */
@@ -467,11 +564,11 @@ function pingRow(el){
 }
 
 /* ═══════════════ ACTIVITY 1 ═══════════════ */
-function startA1(){ S.a1i=0; S.a1s=0; renderA1(); go('s-a1'); }
+function startA1(){ S.A1=shuffle([...pick(B1_IN,4),...pick(B1_ON,4),...pick(B1_AT,4)]); S.a1i=0; S.a1s=0; renderA1(); go('s-a1'); }
 
 function renderA1(){
-  const q=A1[S.a1i];
-  document.getElementById('a1-cnt').textContent=`Question ${S.a1i+1} of ${A1.length}`;
+  const q=S.A1[S.a1i];
+  document.getElementById('a1-cnt').textContent=`Question ${S.a1i+1} of ${S.A1.length}`;
   const bl='<span class="q-blank" id="blank1">___</span>';
   document.getElementById('a1-sent').innerHTML = q.b ? `${q.b} ${bl} ${q.a}` : `${bl} ${q.a}`;
   ['a1-btn-in','a1-btn-on','a1-btn-at'].forEach(id=>{
@@ -485,7 +582,7 @@ function renderA1(){
 }
 
 function ans1(choice){
-  const q=A1[S.a1i], ok=choice===q.ans;
+  const q=S.A1[S.a1i], ok=choice===q.ans;
   const bl=document.getElementById('blank1');
   bl.textContent=choice; bl.className='q-blank '+(ok?'correct':'wrong');
   const fb=document.getElementById('a1-fb');
@@ -502,16 +599,16 @@ function ans1(choice){
 
 function next1(){
   S.a1i++;
-  if(S.a1i<A1.length){ renderA1(); }
-  else showOverlay(S.a1s,A1.length,()=>startA2());
+  if(S.a1i<S.A1.length){ renderA1(); }
+  else showOverlay(S.a1s,S.A1.length,()=>startA2());
 }
 
 /* ═══════════════ ACTIVITY 2 ═══════════════ */
-function startA2(){ S.a2i=0; S.a2s=0; renderA2(); go('s-a2'); }
+function startA2(){ S.A2=shuffle([...pick(B2_IN,4),...pick(B2_ON,4),...pick(B2_AT,4)]); S.a2i=0; S.a2s=0; renderA2(); go('s-a2'); }
 
 function renderA2(){
-  const q=A2[S.a2i];
-  document.getElementById('a2-cnt').textContent=`Question ${S.a2i+1} of ${A2.length}`;
+  const q=S.A2[S.a2i];
+  document.getElementById('a2-cnt').textContent=`Question ${S.a2i+1} of ${S.A2.length}`;
   document.getElementById('a2-sent').innerHTML=q.s.replace('___','<span class="q-blank" id="blank2">___</span>');
   ['a2-btn-in','a2-btn-on','a2-btn-at'].forEach(id=>{
     const b=document.getElementById(id); b.disabled=false;
@@ -524,7 +621,7 @@ function renderA2(){
 }
 
 function ans2(choice){
-  const q=A2[S.a2i], ok=choice===q.ans;
+  const q=S.A2[S.a2i], ok=choice===q.ans;
   const bl=document.getElementById('blank2');
   bl.textContent=choice; bl.className='q-blank '+(ok?'correct':'wrong');
   const fb=document.getElementById('a2-fb');
@@ -541,12 +638,13 @@ function ans2(choice){
 
 function next2(){
   S.a2i++;
-  if(S.a2i<A2.length){ renderA2(); }
-  else showOverlay(S.a2s,A2.length,()=>startA3());
+  if(S.a2i<S.A2.length){ renderA2(); }
+  else showOverlay(S.a2s,S.A2.length,()=>startA3());
 }
 
 /* ═══════════════ ACTIVITY 3 — DRAG & DROP ═══════════════ */
 function startA3(){
+  S.A3=shuffle([...pick(B3_IN,4),...pick(B3_ON,4),...pick(B3_AT,4)]);
   S.a3s=0; S.a3placed=0;
   buildPool();
   ['IN','ON','AT'].forEach(t=>{
@@ -559,7 +657,7 @@ function startA3(){
 
 function buildPool(){
   const pool=document.getElementById('pool'); pool.innerHTML='';
-  A3.forEach((item,idx)=>{
+  S.A3.forEach((item,idx)=>{
     const chip=document.createElement('div');
     chip.className='chip'; chip.dataset.idx=idx; chip.dataset.ans=item.ans;
     chip.innerHTML=`<span>${item.e}</span>${item.w}`;
@@ -616,12 +714,12 @@ function endDrag(cx,cy){
   if(ok){ S.a3s++; S.stars++; updStars(); burst(); beep(880,.1,1100,.15); }
   else beep(220,.3);
   S.a3placed++;
-  const left=A3.length-S.a3placed;
+  const left=S.A3.length-S.a3placed;
   document.getElementById('drag-info').textContent=left>0?`${left} word${left>1?'s':''} left! 💪`:'All done! 🌟';
-  if(S.a3placed===A3.length) document.getElementById('btn-fin').classList.add('show');
+  if(S.a3placed===S.A3.length) document.getElementById('btn-fin').classList.add('show');
 }
 
-function finishDrag(){ showOverlay(S.a3s,A3.length,showResults); }
+function finishDrag(){ showOverlay(S.a3s,S.A3.length,showResults); }
 
 /* ═══════════════ OVERLAY ═══════════════ */
 function showOverlay(score,total,onNext){
@@ -639,7 +737,7 @@ function showOverlay(score,total,onNext){
 
 /* ═══════════════ RESULTS ═══════════════ */
 function showResults(){
-  const total=A1.length+A2.length+A3.length; // 36
+  const total=S.A1.length+S.A2.length+S.A3.length;
   const p=S.stars/total;
   const [trophy,title,msg]=p>=.93?['🏆','SUPERSTAR!','You\'re an IN · ON · AT champion! 🌟']:
     p>=.77?['🥇','Excellent!','Fantastic work — almost perfect!']:
@@ -654,7 +752,7 @@ function showResults(){
 }
 
 function restart(){
-  Object.assign(S,{stars:0,a1i:0,a1s:0,a2i:0,a2s:0,a3s:0,a3placed:0});
+  Object.assign(S,{stars:0,A1:[],A2:[],A3:[],a1i:0,a1s:0,a2i:0,a2s:0,a3s:0,a3placed:0});
   updStars(); go('s-welcome');
 }
 
